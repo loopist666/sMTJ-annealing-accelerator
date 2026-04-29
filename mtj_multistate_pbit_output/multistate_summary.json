@@ -1,0 +1,99 @@
+{
+  "assumption": "Use multistate segmentation on MTJ traces and convert local state occupancy into a multi-dimensional p-bit bias vector for stochastic Ising optimization.",
+  "configuration": {
+    "n_states": 4,
+    "pbit_dims": 2,
+    "steps": 420,
+    "problem_type": "18-spin Ising minimization",
+    "exact_optimum_energy": -58.0,
+    "runs_per_dataset": 40
+  },
+  "multistate_profile": {
+    "good": {
+      "n_states": 4,
+      "pbit_dims": 2,
+      "state_entropy_bits": 1.8179259724631596,
+      "state_counts": [
+        68,
+        382,
+        285,
+        265
+      ],
+      "transition_count": 127,
+      "mean_transition_entropy_bits": 0.7657052774537193,
+      "temperature_start": 2.199999999995327,
+      "temperature_end": 0.15,
+      "temperature_area": 574.5543144710862,
+      "mean_abs_pbit_bias": 0.583367633382452,
+      "pbit_bias_corr": [
+        [
+          1.0,
+          -0.8326583922967132
+        ],
+        [
+          -0.8326583922967132,
+          1.0
+        ]
+      ]
+    },
+    "bad": {
+      "n_states": 4,
+      "pbit_dims": 2,
+      "state_entropy_bits": 1.5363589746280923,
+      "state_counts": [
+        249,
+        429,
+        1014,
+        2404
+      ],
+      "transition_count": 156,
+      "mean_transition_entropy_bits": 0.35735003404216475,
+      "temperature_start": 2.199999999992679,
+      "temperature_end": 0.15,
+      "temperature_area": 787.2321428545557,
+      "mean_abs_pbit_bias": 0.658318511329089,
+      "pbit_bias_corr": [
+        [
+          0.9999999999999999,
+          -0.45043408788832806
+        ],
+        [
+          -0.450434087888328,
+          1.0
+        ]
+      ]
+    }
+  },
+  "optimization_performance": {
+    "good": {
+      "runs": 40,
+      "mean_best_energy": -57.3,
+      "std_best_energy": 1.8193405398660252,
+      "best_energy_seen": -58.0,
+      "mean_energy_gap": 0.7,
+      "median_energy_gap": 0.0,
+      "max_energy_gap": 8.0,
+      "optimum_hit_rate": 0.825,
+      "mean_acceptance_rate": 0.08800595238095239,
+      "mean_early_acceptance": 0.17574404761904763,
+      "mean_late_acceptance": 0.006845238095238096
+    },
+    "bad": {
+      "runs": 40,
+      "mean_best_energy": -57.8,
+      "std_best_energy": 0.7483314773547882,
+      "best_energy_seen": -58.0,
+      "mean_energy_gap": 0.2,
+      "median_energy_gap": 0.0,
+      "max_energy_gap": 4.0,
+      "optimum_hit_rate": 0.925,
+      "mean_acceptance_rate": 0.10184523809523811,
+      "mean_early_acceptance": 0.16860119047619046,
+      "mean_late_acceptance": 0.0462797619047619
+    }
+  },
+  "overall_ranking": [
+    "bad",
+    "good"
+  ]
+}

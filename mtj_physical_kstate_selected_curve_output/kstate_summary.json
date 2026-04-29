@@ -1,0 +1,208 @@
+{
+  "assumption": "Analyze one selected MTJ curve with the physical K-state hazard route.",
+  "technical_route": [
+    "读取选定的 Time/AI/AV 序列，并将 AI 幅值视为可观测的物理随机状态信号。",
+    "对 AI 幅值拟合一维 Gaussian mixture 候选模型，并用 BIC 在 1..8 个隐状态之间选择 K。",
+    "用带自保持偏置的 Gaussian HMM 和 Viterbi 解码，把带噪声的连续幅值轨迹分割为稳定的 K 个隐状态。",
+    "按各状态的 AI 均值重新排序状态，提取每段 dwell time，并由相邻 dwell 段统计 KxK 转移矩阵。",
+    "将 K-state 序列映射到 Gray-code p-bit bias，同时从 AI、跳变强度和局部波动中构造经验随机通道。",
+    "把状态退出率作为 hazard rate，驱动 18-spin Ising 随机更新，并用多次运行统计能量 gap、命中率和接受率。",
+    "沿外部轴做分箱稳定性检查，观察每个隐状态在不同区间中的占据比例与局部均值漂移。"
+  ],
+  "problem": {
+    "type": "18-spin Ising minimization",
+    "exact_optimum_energy": -58.0,
+    "runs_per_curve": 40
+  },
+  "kstate_model_summary": {
+    "selected_curve": {
+      "selected_k": 6,
+      "pbit_dims": 3,
+      "state_entropy_bits": 2.396211270266767,
+      "state_counts": [
+        170,
+        384,
+        790,
+        1081,
+        1025,
+        646
+      ],
+      "state_means": [
+        -0.08304741176470588,
+        -0.06464044270833333,
+        -0.058045759493670884,
+        -0.05506793709528215,
+        -0.0531666243902439,
+        -0.051501811145510834
+      ],
+      "state_std": [
+        0.002064941618853511,
+        0.005375126748684723,
+        0.0010511770944654651,
+        0.0007042786507304008,
+        0.0004536504729417108,
+        0.0007918125745329328
+      ],
+      "sample_transition_count": 135,
+      "dwell_models": [
+        {
+          "state": 0,
+          "count": 9,
+          "mean_duration": 2.370777777777778,
+          "rate": 0.42180250269484926,
+          "cv": 0.8919882065556869
+        },
+        {
+          "state": 1,
+          "count": 30,
+          "mean_duration": 1.6060043333333345,
+          "rate": 0.6226633261471063,
+          "cv": 1.1077456981660438
+        },
+        {
+          "state": 2,
+          "count": 27,
+          "mean_duration": 3.6725925925925895,
+          "rate": 0.27228721258572025,
+          "cv": 1.3748111359842778
+        },
+        {
+          "state": 3,
+          "count": 36,
+          "mean_duration": 3.7700000000000022,
+          "rate": 0.2652519893899203,
+          "cv": 1.135301772102297
+        },
+        {
+          "state": 4,
+          "count": 22,
+          "mean_duration": 5.845590909090912,
+          "rate": 0.171069104142205,
+          "cv": 0.8535115142817981
+        },
+        {
+          "state": 5,
+          "count": 12,
+          "mean_duration": 6.757999999999989,
+          "rate": 0.14797277300976644,
+          "cv": 0.8151292648264465
+        }
+      ],
+      "transition_matrix": [
+        [
+          0.06666666666666667,
+          0.6666666666666666,
+          0.06666666666666667,
+          0.06666666666666667,
+          0.06666666666666667,
+          0.06666666666666667
+        ],
+        [
+          0.25,
+          0.027777777777777776,
+          0.5555555555555556,
+          0.1111111111111111,
+          0.027777777777777776,
+          0.027777777777777776
+        ],
+        [
+          0.06060606060606061,
+          0.24242424242424243,
+          0.030303030303030304,
+          0.6060606060606061,
+          0.030303030303030304,
+          0.030303030303030304
+        ],
+        [
+          0.023809523809523808,
+          0.2619047619047619,
+          0.16666666666666666,
+          0.023809523809523808,
+          0.5,
+          0.023809523809523808
+        ],
+        [
+          0.03571428571428571,
+          0.03571428571428571,
+          0.07142857142857142,
+          0.35714285714285715,
+          0.03571428571428571,
+          0.4642857142857143
+        ],
+        [
+          0.058823529411764705,
+          0.23529411764705882,
+          0.11764705882352941,
+          0.35294117647058826,
+          0.17647058823529413,
+          0.058823529411764705
+        ]
+      ],
+      "mean_exit_rate": 0.31684115132826124,
+      "stability": {
+        "axis_source": "time_window_proxy",
+        "n_bins": 5,
+        "stable_state_fraction": 0.6666666666666666,
+        "state_summary": [
+          {
+            "state": 0,
+            "stable_presence_fraction": 0.2,
+            "local_mean_drift": 0.0,
+            "tolerance": 0.003097412428280266,
+            "stable_under_axis": false
+          },
+          {
+            "state": 1,
+            "stable_presence_fraction": 0.2,
+            "local_mean_drift": 0.002178577757573263,
+            "tolerance": 0.008062690123027084,
+            "stable_under_axis": false
+          },
+          {
+            "state": 2,
+            "stable_presence_fraction": 0.8,
+            "local_mean_drift": 0.00030866432400110155,
+            "tolerance": 0.0015767656416981976,
+            "stable_under_axis": true
+          },
+          {
+            "state": 3,
+            "stable_presence_fraction": 1.0,
+            "local_mean_drift": 0.0003011424473065739,
+            "tolerance": 0.001056417976095601,
+            "stable_under_axis": true
+          },
+          {
+            "state": 4,
+            "stable_presence_fraction": 0.8,
+            "local_mean_drift": 0.00023896825760727746,
+            "tolerance": 0.0006804757094125662,
+            "stable_under_axis": true
+          },
+          {
+            "state": 5,
+            "stable_presence_fraction": 0.8,
+            "local_mean_drift": 0.0003779185580692963,
+            "tolerance": 0.0011877188617993991,
+            "stable_under_axis": true
+          }
+        ]
+      }
+    }
+  },
+  "optimization_performance": {
+    "selected_curve": {
+      "runs": 40,
+      "mean_best_energy": -55.45,
+      "std_best_energy": 2.93214938227915,
+      "best_energy_seen": -58.0,
+      "mean_energy_gap": 2.55,
+      "median_energy_gap": 2.0,
+      "max_energy_gap": 8.0,
+      "optimum_hit_rate": 0.4,
+      "mean_acceptance_rate": 0.021574074074074072,
+      "mean_early_acceptance": 0.04918981481481481,
+      "mean_late_acceptance": 0.014004629629629627
+    }
+  }
+}

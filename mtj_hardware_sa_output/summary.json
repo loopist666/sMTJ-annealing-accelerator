@@ -1,0 +1,78 @@
+{
+  "assumption": "Treat MTJ random telegraph-like jumps as a hardware annealing resource. Local jump intensity defines a cooling schedule, and the resampled signal provides random numbers and binary states for a small Ising optimization demo.",
+  "problem": {
+    "type": "18-spin Ising minimization",
+    "exact_optimum_energy": -58.0,
+    "runs_per_dataset": 40
+  },
+  "dataset_quality": {
+    "good": {
+      "samples": 1000,
+      "early_std": 0.006612514204938631,
+      "late_std": 0.0020413449101232967,
+      "std_drop_ratio": 3.239292962647818,
+      "early_mean_abs_jump": 0.0025422868868672697,
+      "late_mean_abs_jump": 0.0008418615383795507,
+      "jump_drop_ratio": 3.019839686156618,
+      "cooling_monotone_ratio": 1.0,
+      "temperature_start": 2.499999999655751,
+      "temperature_end": 0.14155475079322316,
+      "temperature_area": 832.2284023955747,
+      "random_entropy_bits_16bins": 3.9999857511131798,
+      "jump_intensity_mean": 0.0018742272687495261,
+      "jump_intensity_std": 0.0013694787553771408,
+      "ai_mean": -0.06698345617204905,
+      "av_mean": -2.0
+    },
+    "bad": {
+      "samples": 4096,
+      "early_std": 0.010576336537827554,
+      "late_std": 0.0021619970427818437,
+      "std_drop_ratio": 4.89192923193227,
+      "early_mean_abs_jump": 0.0012115933528836754,
+      "late_mean_abs_jump": 0.00015968719452590408,
+      "jump_drop_ratio": 7.587291823201526,
+      "cooling_monotone_ratio": 1.0,
+      "temperature_start": 2.499999999326044,
+      "temperature_end": 0.03062652796564662,
+      "temperature_area": 676.8739023542249,
+      "random_entropy_bits_16bins": 3.9999857511131798,
+      "jump_intensity_mean": 0.0005553071229827667,
+      "jump_intensity_std": 0.0007209494326178493,
+      "ai_mean": -0.056662729492187494,
+      "av_mean": -2.3
+    }
+  },
+  "optimization_performance": {
+    "good": {
+      "runs": 40,
+      "mean_best_energy": -50.7,
+      "std_best_energy": 5.244997616777343,
+      "best_energy_seen": -58.0,
+      "mean_energy_gap": 7.3,
+      "median_energy_gap": 8.0,
+      "max_energy_gap": 16.0,
+      "optimum_hit_rate": 0.15,
+      "mean_acceptance_rate": 0.12229166666666669,
+      "mean_early_acceptance": 0.234375,
+      "mean_late_acceptance": 0.07541666666666666
+    },
+    "bad": {
+      "runs": 40,
+      "mean_best_energy": -48.8,
+      "std_best_energy": 4.019950248448356,
+      "best_energy_seen": -58.0,
+      "mean_energy_gap": 9.2,
+      "median_energy_gap": 8.0,
+      "max_energy_gap": 18.0,
+      "optimum_hit_rate": 0.05,
+      "mean_acceptance_rate": 0.10287500000000001,
+      "mean_early_acceptance": 0.20604166666666668,
+      "mean_late_acceptance": 0.07520833333333332
+    }
+  },
+  "overall_ranking": [
+    "good",
+    "bad"
+  ]
+}

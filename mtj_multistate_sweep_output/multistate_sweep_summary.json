@@ -1,0 +1,24 @@
+{
+  "assumption": "Sweep multistate segmentation granularity and p-bit dimensionality, then compare MTJ datasets on a shared Ising/Max-Cut benchmark suite.",
+  "state_counts": [
+    4,
+    6,
+    8
+  ],
+  "runs_per_instance": 20,
+  "steps": 420,
+  "best_by_dataset": {
+    "good": {
+      "n_states": 8,
+      "pbit_dims": 3,
+      "mean_instance_gap": 0.6,
+      "mean_instance_hit_rate": 0.9125000000000001
+    },
+    "bad": {
+      "n_states": 8,
+      "pbit_dims": 3,
+      "mean_instance_gap": 0.275,
+      "mean_instance_hit_rate": 0.95
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "assumption": "Use explicit two-state segmentation, dwell-time extraction, exponential dwell models, and empirical switching rates to drive a hazard-based MTJ annealing demo.",
+  "problem": {
+    "type": "18-spin Ising minimization",
+    "exact_optimum_energy": -58.0,
+    "runs_per_dataset": 40,
+    "energy_scale": 3.2777777777777777
+  },
+  "physical_model_summary": {
+    "good": {
+      "samples": 1000,
+      "transition_count": 79,
+      "state_occupancy_high": 0.543,
+      "state_occupancy_low": 0.45699999999999996,
+      "low_state_model": {
+        "count": 40,
+        "mean_duration": 1.4339311838150146,
+        "rate": 0.6973835364535916,
+        "cv": 3.9663380929666787,
+        "ks_distance": 0.49406256875330945
+      },
+      "high_state_model": {
+        "count": 40,
+        "mean_duration": 1.7037766410037931,
+        "rate": 0.5869313946051299,
+        "cv": 1.3414148964552493,
+        "ks_distance": 0.2221033171564457
+      },
+      "local_rate_mean": 0.6395989738459488,
+      "local_rate_std": 0.1721777888772185,
+      "local_rate_early_mean": 0.7352449356825609,
+      "local_rate_late_mean": 0.512961583034345,
+      "local_rate_drop_ratio": 1.4333333333333327,
+      "effective_barrier_low_state_log_units": 4.7383957636986995,
+      "effective_barrier_high_state_log_units": 4.910823352236542,
+      "random_u_mean": 0.5000281040166762,
+      "random_u_std": 0.22080316081208617,
+      "sample_dt": 0.12550735473639918,
+      "low_mean": -0.07200887956396099,
+      "high_mean": -0.06331437542570503,
+      "low_threshold": -0.0689658031155714,
+      "high_threshold": -0.06635745187409461
+    },
+    "bad": {
+      "samples": 4096,
+      "transition_count": 30,
+      "state_occupancy_high": 0.925048828125,
+      "state_occupancy_low": 0.074951171875,
+      "low_state_model": {
+        "count": 15,
+        "mean_duration": 2.569668,
+        "rate": 0.3891553305718871,
+        "cv": 1.2693461409843019,
+        "ks_distance": 0.24027423594908676
+      },
+      "high_state_model": {
+        "count": 16,
+        "mean_duration": 29.721188125000005,
+        "rate": 0.03364603042766144,
+        "cv": 2.01579426727784,
+        "ks_distance": 0.5005821840669289
+      },
+      "local_rate_mean": 0.17292996757271037,
+      "local_rate_std": 0.03596025130211488,
+      "local_rate_early_mean": 0.20646391565715233,
+      "local_rate_late_mean": 0.15780681451502088,
+      "local_rate_drop_ratio": 1.3083333333333333,
+      "effective_barrier_low_state_log_units": 5.317835172707647,
+      "effective_barrier_high_state_log_units": 7.765918661363233,
+      "random_u_mean": 0.5077301928880431,
+      "random_u_std": 0.27580652894791874,
+      "sample_dt": 0.12599999999999767,
+      "low_mean": -0.077955,
+      "high_mean": -0.055004173684210525,
+      "low_threshold": -0.06992221078947368,
+      "high_threshold": -0.06303696289473684
+    }
+  },
+  "optimization_performance": {
+    "good": {
+      "runs": 40,
+      "mean_best_energy": -18.4,
+      "std_best_energy": 10.547037498748168,
+      "best_energy_seen": -38.0,
+      "mean_energy_gap": 39.6,
+      "median_energy_gap": 34.0,
+      "max_energy_gap": 62.0,
+      "optimum_hit_rate": 0.0,
+      "mean_acceptance_rate": 0.0521875,
+      "mean_early_acceptance": 0.075,
+      "mean_late_acceptance": 0.034375
+    },
+    "bad": {
+      "runs": 40,
+      "mean_best_energy": -11.4,
+      "std_best_energy": 10.394229168149026,
+      "best_energy_seen": -36.0,
+      "mean_energy_gap": 46.6,
+      "median_energy_gap": 50.0,
+      "max_energy_gap": 72.0,
+      "optimum_hit_rate": 0.0,
+      "mean_acceptance_rate": 0.0928125,
+      "mean_early_acceptance": 0.153125,
+      "mean_late_acceptance": 0.06953125
+    }
+  },
+  "overall_ranking": [
+    "good",
+    "bad"
+  ]
+}

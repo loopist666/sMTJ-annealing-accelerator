@@ -1,0 +1,26 @@
+{
+  "assumption": "Benchmark MTJ-derived annealing schedules on multiple exact-solvable Ising-style optimization instances and compare solution quality across datasets.",
+  "runs_per_instance": 30,
+  "overall": {
+    "good": {
+      "instances": 8,
+      "instance_wins": 5,
+      "mean_instance_gap": 5.283333333333333,
+      "mean_instance_hit_rate": 0.25416666666666665,
+      "mean_instance_best_energy": -43.71666666666667,
+      "mean_instance_acceptance": 0.09911805555555556
+    },
+    "bad": {
+      "instances": 8,
+      "instance_wins": 3,
+      "mean_instance_gap": 5.866666666666667,
+      "mean_instance_hit_rate": 0.20833333333333331,
+      "mean_instance_best_energy": -43.13333333333333,
+      "mean_instance_acceptance": 0.08829861111111112
+    }
+  },
+  "ranking": [
+    "good",
+    "bad"
+  ]
+}

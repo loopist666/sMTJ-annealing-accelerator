@@ -1,0 +1,45 @@
+{
+  "assumption": "将两组 MTJ 数据视为 Time/AI/AV 序列，使用模拟退火寻找 bad 数据映射到 good 数据的最佳时间与幅值变换。",
+  "input_files": {
+    "good_file": "simulated annealing.xlsx",
+    "bad_file": "simulated annealing_bad.xlsx"
+  },
+  "sample_sizes": {
+    "good_rows": 1000,
+    "bad_rows": 4096
+  },
+  "raw_alignment": {
+    "naive_time_scale": 0.24395588144375202,
+    "ai_metrics": {
+      "mse": 0.00020359827102797858,
+      "rmse": 0.014268786599707019,
+      "mae": 0.012939802525659709,
+      "mean_error": 0.010359097479377126,
+      "max_abs_error": 0.038458565507192455,
+      "corr": -0.26660124322028417
+    }
+  },
+  "simulated_annealing_fit": {
+    "params": {
+      "time_scale": 0.3724857072927251,
+      "time_shift": -0.3856135264749383,
+      "ai_scale": -0.2681480251149162,
+      "ai_bias": -0.08201035860836837
+    },
+    "objective": 2.596278814429764e-05,
+    "ai_metrics": {
+      "mse": 2.596278814429764e-05,
+      "rmse": 0.005095369284389272,
+      "mae": 0.003792679148463617,
+      "mean_error": 0.00043253747221644643,
+      "max_abs_error": 0.024314645241955368,
+      "corr": 0.41106344649019255
+    }
+  },
+  "av_difference": {
+    "good_constant": -2.0,
+    "bad_constant": -2.3,
+    "mean_difference": -0.2999999999999998,
+    "max_abs_difference": 0.2999999999999998
+  }
+}
