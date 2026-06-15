@@ -1,0 +1,5 @@
+n_nodes,variables,edges,reference_cut,reference_method,best_cut,median_cut_ratio,best_cut_ratio,median_gap_to_reference,best_gap_to_reference,hit_rate,best_run_idx
+10,10,16,47.0,exact,47.0,1.0,1.0,0.0,0.0,1.0,0
+16,16,53,154.0,exact,154.0,1.0,1.0,0.0,0.0,0.8333333333333334,0
+24,24,108,313.0,multi-start 1-flip local search,313.0,1.0,1.0,0.0,0.0,0.5416666666666666,3
+32,32,130,380.0,multi-start 1-flip local search,380.0,0.9868421052631579,1.0,5.0,0.0,0.16666666666666666,0
