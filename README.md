@@ -1,144 +1,178 @@
 # sMTJ Annealing Accelerator
 
-这个仓库整理了基于 MTJ/sMTJ 随机物理信号的 simulated annealing、p-bit、K-state Ising solver 和组合优化应用 demo。当前代码的重点不是搭建通用框架，而是把实验曲线、硬件随机性建模、Ising/QUBO 优化和论文图表结果放在一个可以复现实验的轻量项目里，方便迁移到另一台设备继续开发。
+基于 stochastic magnetic tunnel junction（sMTJ）实测时间序列的随机计算实验仓库。项目覆盖连续信号预处理、离散 K-state 建模、p-bit/P-dit 更新、Ising/QUBO 组合优化，以及 P0/P1 两阶段算法改进。
 
-## 当前工作摘要
+当前主线是把器件的多状态随机动力学从“随机数来源”提升为可验证的计算 proposal：
 
-- 已读取两组 MTJ Excel 数据：`simulated annealing.xlsx` 和 `simulated annealing_bad.xlsx`，字段主要为 `Time`、`AI`、`AV`。
-- 已完成传统 simulated annealing 对齐 demo，用于比较 good/bad 曲线并输出残差与拟合指标。
-- 已从 MTJ 时间序列构造硬件退火 profile、多维 p-bit profile、physical K-state profile，并将这些 profile 用于 Ising 随机优化。
-- 已完成 benchmark、multistate sweep、K-state selected-curve 分析和对应图表。
-- 最新增量是 `mtj_ising_application_demos.py`：把 TSP、Weighted Max-Cut、Portfolio Selection 编码为 QUBO，再转换为 Ising energy，用 MTJ physical K-state stochastic solver 求解，并输出 scaling CSV、PNG 和论文用总结。
+- **P0 — Direct P-dit**：取消 Gray code 和 one-hot penalty，直接使用分类变量，并修复离散状态重采样产生虚假中间状态的问题。
+- **P0 benchmark**：统一比较 physical Gray P-bit、software Gray Glauber、direct P-dit、physical MH P-dit 四种求解器。
+- **P0 TSP**：在 TSP 中比较原始 one-hot Ising 路线和始终保持合法排列的直接 P-dit 路线。
+- **P1 — Empirical-transition MH**：使用实测退出率和转移矩阵形成
 
-## 文件结构
+  \[
+  q_{kl}=r_kP_{kl},
+  \qquad
+  A_{kl}=\min\left(1,e^{-\beta\Delta E_{kl}}\frac{q_{lk}}{q_{kl}}\right),
+  \]
+
+  并在同一个 K=6 profile 上比较 Gray-coded binary、ordered 1D P-dit 和 isotropic six-state P-dit。
+
+## 仓库结构
 
 ```text
 .
-├── simulated annealing.xlsx
-├── simulated annealing_bad.xlsx
-├── random number.xlsx
-├── mtj_sa_demo.py
-├── mtj_hardware_sa_demo.py
-├── mtj_hardware_sa_multistate_demo.py
-├── mtj_hardware_sa_benchmark.py
-├── mtj_multistate_pbit_demo.py
-├── mtj_multistate_pbit_sweep.py
-├── mtj_physical_sa_demo.py
-├── mtj_physical_kstate_demo.py
-├── mtj_physical_kstate_selected_curve.py
-├── mtj_ising_application_demos.py
-├── plot_selected_curve_multistate_performance.py
-├── plot_selected_curve_multistate_performance_k6.py
-├── mtj_*_output/
-├── selected_curve_*.png
-├── multistate_pbit_best_kstate_performance.png
-├── mtj_physical_sa_vs_multistate_pbit_performance.png
-├── mtj_ising_application_results.md
-└── mtj_ising_application_results_overleaf.tex
+├── README.md
+├── requirements.txt
+├── data/                         # 原始 Excel 测量数据
+│   ├── simulated annealing.xlsx
+│   ├── simulated annealing_bad.xlsx
+│   └── random number.xlsx
+├── src/                          # 全部 Python 源码
+│   ├── project_paths.py          # 统一 data/results/docs 路径
+│   ├── mtj_p0_direct_pdit_partition.py
+│   ├── mtj_p0_four_solver_benchmark.py
+│   ├── mtj_p0_pdit_tsp_comparison.py
+│   ├── mtj_p1_empirical_transition_mh.py
+│   └── mtj_*.py                  # 基础 SA、p-bit、K-state 和应用脚本
+├── results/                      # 已提交的可复现实验快照
+│   ├── mtj_p0_direct_pdit_output/
+│   ├── mtj_p0_four_solver_output/
+│   ├── mtj_p0_pdit_tsp_comparison_output/
+│   ├── mtj_p1_empirical_transition_mh_output/
+│   ├── mtj_ising_application_demos_output/
+│   └── ...
+└── docs/                         # 报告与本地打包材料
+    └── mtj_ising_application_results.md
 ```
 
-主要脚本与输出关系：
+`src/project_paths.py` 使用脚本自身位置确定仓库根目录，因此下面的命令可从任意工作目录执行。所有新结果都会写入仓库的 `results/`。
 
-| 脚本 | 用途 | 主要输出 |
-|---|---|---|
-| `mtj_sa_demo.py` | 用 SA 对齐 good/bad MTJ 曲线 | `mtj_sa_output/` |
-| `mtj_hardware_sa_demo.py` | 从 MTJ 信号构造硬件退火 profile 并跑 Ising demo | `mtj_hardware_sa_output/` |
-| `mtj_hardware_sa_multistate_demo.py` | 多状态硬件 SA profile | `mtj_hardware_sa_multistate_output/` |
-| `mtj_hardware_sa_benchmark.py` | 多个 Ising benchmark 实例统计 | `mtj_benchmark_output/` |
-| `mtj_multistate_pbit_demo.py` | 多维 p-bit 随机更新 demo | `mtj_multistate_pbit_output/` |
-| `mtj_multistate_pbit_sweep.py` | multistate p-bit 参数/实例 sweep | `mtj_multistate_sweep_output/` |
-| `mtj_physical_sa_demo.py` | 物理随机退火 profile 分析 | `mtj_physical_sa_output/` |
-| `mtj_physical_kstate_demo.py` | 从 MTJ 曲线提取 K-state 隐状态并用于 Ising | `mtj_physical_kstate_output/` |
-| `mtj_physical_kstate_selected_curve.py` | 对选定曲线做 K-state 技术路线图和稳定性分析 | `mtj_physical_kstate_selected_curve_output/` |
-| `mtj_ising_application_demos.py` | TSP、Max-Cut、Portfolio 的 QUBO/Ising 应用 demo | `mtj_ising_application_demos_output/` |
+## 安装
 
-## 环境迁移
+需要 Python 3.10 或更高版本。
 
-在新设备上克隆仓库后，建议使用 Python 3.10+。当前脚本只依赖常见科学计算包。
-
-```powershell
+```bash
 git clone https://github.com/loopist666/sMTJ-annealing-accelerator.git
 cd sMTJ-annealing-accelerator
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+python3 -m venv .venv
+source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-Linux/macOS 激活虚拟环境时使用：
+Windows PowerShell 激活环境：
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+## P0：Direct P-dit
+
+### 直接分类三分区
 
 ```bash
-source .venv/bin/activate
+python src/mtj_p0_direct_pdit_partition.py
 ```
+
+主要改动：
+
+1. 一个 D-partition 变量直接表示为一个 D-state categorical P-dit。
+2. 不再使用 Gray code 或 one-hot penalty。
+3. 每个 dwell segment 至少保留一个离散样本，保持 dwell 顺序和边界。
+4. 输出重采样验证、分区成功率和更新 checkpoint。
+
+结果位于 [`results/mtj_p0_direct_pdit_output/`](results/mtj_p0_direct_pdit_output/)。
+
+### 四求解器统一对照
+
+```bash
+python src/mtj_p0_four_solver_benchmark.py
+```
+
+默认在可完全枚举的三分区问题上运行 64 条独立 trace，每条 4000 次更新，并报告：
+
+- \(P_{success}(n)\)、trials/time-to-solution；
+- 平均和中位 energy gap、首次命中更新数；
+- valid-state ratio、trace 间方差；
+- integrated autocorrelation time；
+- 与精确 Boltzmann 分布的 KL divergence；
+- empirical detailed-balance flux error；
+- 物理随机样本消耗。
+
+结果位于 [`results/mtj_p0_four_solver_output/`](results/mtj_p0_four_solver_output/)。
+
+![P0 four-solver success](results/mtj_p0_four_solver_output/four_solver_success.png)
+
+### TSP 对照
+
+```bash
+python src/mtj_p0_pdit_tsp_comparison.py
+```
+
+该实验比较原始 one-hot Ising TSP 与直接 permutation P-dit；后者的所有中间状态都是合法路线。结果位于 [`results/mtj_p0_pdit_tsp_comparison_output/`](results/mtj_p0_pdit_tsp_comparison_output/)。
+
+## P1：Empirical-transition MH
+
+```bash
+python src/mtj_p1_empirical_transition_mh.py
+```
+
+P1 固定使用 selected-curve 的 K=6 profile，将实测 \(r_k\) 和 \(P_{kl}\) 共同用于状态对 proposal，而不是仅使用总退出率作为 hazard gate。默认配置为 64 条 trace、每条 8000 次更新，并精确枚举 \(6^4=1296\) 个状态。
+
+输出包括：
+
+- 三种状态几何的 proposal locality 和 rate-distance correlation；
+- MH acceptance、成功率和首次命中；
+- KL、total variation、IAT 和 effective samples；
+- 理论与经验 detailed-balance error；
+- 实测 \(q\) 矩阵与三种几何距离矩阵。
+
+当前器件转移图与 **ordered 1D P-dit** 最匹配：其 proposal locality、MH 接受率和混合效率均优于 Gray 和 isotropic 解释。
+
+结果位于 [`results/mtj_p1_empirical_transition_mh_output/`](results/mtj_p1_empirical_transition_mh_output/)。
+
+![P1 transition geometry](results/mtj_p1_empirical_transition_mh_output/p1_transition_geometry.png)
+
+![P1 sampling metrics](results/mtj_p1_empirical_transition_mh_output/p1_sampling_metrics.png)
+
+## 其他实验
+
+| 脚本 | 功能 | 输出目录 |
+|---|---|---|
+| `src/mtj_sa_demo.py` | good/bad 曲线对齐与传统 SA | `results/mtj_sa_output/` |
+| `src/mtj_hardware_sa_demo.py` | MTJ hardware-SA profile 与 Ising demo | `results/mtj_hardware_sa_output/` |
+| `src/mtj_hardware_sa_multistate_demo.py` | 多状态 hardware-SA | `results/mtj_hardware_sa_multistate_output/` |
+| `src/mtj_hardware_sa_benchmark.py` | 多 Ising 实例 benchmark | `results/mtj_benchmark_output/` |
+| `src/mtj_multistate_pbit_demo.py` | 多状态 p-bit 更新 | `results/mtj_multistate_pbit_output/` |
+| `src/mtj_multistate_pbit_sweep.py` | K-state 参数与实例 sweep | `results/mtj_multistate_sweep_output/` |
+| `src/mtj_physical_sa_demo.py` | dwell/hazard 物理退火分析 | `results/mtj_physical_sa_output/` |
+| `src/mtj_physical_kstate_demo.py` | GMM/HMM K-state 提取与优化 | `results/mtj_physical_kstate_output/` |
+| `src/mtj_physical_kstate_selected_curve.py` | selected-curve K-state 稳定性分析 | `results/mtj_physical_kstate_selected_curve_output/` |
+| `src/mtj_ising_application_demos.py` | TSP、Max-Cut、Portfolio QUBO/Ising | `results/mtj_ising_application_demos_output/` |
+
+应用实验的详细说明见 [`docs/mtj_ising_application_results.md`](docs/mtj_ising_application_results.md)。
 
 ## 推荐复现顺序
 
-从基础数据对齐到应用 demo，可以按下面顺序运行：
-
-```powershell
-python mtj_sa_demo.py
-python mtj_hardware_sa_demo.py
-python mtj_hardware_sa_benchmark.py
-python mtj_physical_kstate_demo.py
-python mtj_physical_kstate_selected_curve.py
-python mtj_multistate_pbit_demo.py
-python mtj_multistate_pbit_sweep.py
-python mtj_ising_application_demos.py
-python plot_selected_curve_multistate_performance.py
-python plot_selected_curve_multistate_performance_k6.py
+```bash
+python src/mtj_sa_demo.py
+python src/mtj_physical_kstate_demo.py
+python src/mtj_p0_direct_pdit_partition.py
+python src/mtj_p0_four_solver_benchmark.py
+python src/mtj_p0_pdit_tsp_comparison.py
+python src/mtj_p1_empirical_transition_mh.py
+python src/mtj_ising_application_demos.py
 ```
 
-每个脚本通常会在对应的 `*_output/` 目录写入：
+## 数据与结果管理
 
-- `*.json`：汇总配置、关键指标、参考解和运行统计。
-- `*.csv`：逐实例或逐 run 的原始统计，适合后续制图和论文表格。
-- `*.png`：论文或汇报用图。
+- `data/` 中的 Excel 文件是实验输入，脚本不会覆盖它们。
+- `results/` 中保存当前论文和汇报所用的 CSV、JSON、PNG 快照。
+- `docs/*.zip`、虚拟环境、Python cache 和临时文件由 `.gitignore` 排除。
+- 重新运行脚本会更新相应 `results/<experiment>/`，提交前应检查参数和 diff。
 
-## 最新 Ising 应用 demo
+## 许可证与引用
 
-`mtj_ising_application_demos.py` 的核心流程：
+仓库目前未声明开源许可证；公开复用前请联系仓库维护者确认许可范围。
 
-1. 将实际问题写成 QUBO。
-2. 使用 `x = (s + 1) / 2` 转换为 Ising energy。
-3. 调用 `mtj_physical_kstate_demo.py` 中的 K-state profile，把 MTJ 隐状态、dwell/exit rate 和随机序列用于 spin proposal/acceptance。
-4. 对 TSP、Max-Cut、Portfolio 分别解码并和 exact 或 heuristic reference 比较。
-
-当前结果位置：
-
-- 总结 JSON：`mtj_ising_application_demos_output/application_demo_summary.json`
-- 主报告：`mtj_ising_application_results.md`
-- Overleaf 版本：`mtj_ising_application_results_overleaf.tex`
-- TSP scaling：`mtj_ising_application_demos_output/tsp_scaling_summary.csv`
-- Max-Cut scaling：`mtj_ising_application_demos_output/maxcut_scaling_summary.csv`
-- Portfolio scaling：`mtj_ising_application_demos_output/portfolio_scaling_summary.csv`
-
-当前关键观察：
-
-- K-state profile 使用 good dataset，当前应用 demo 中 selected K 为 4，p-bit dimensions 为 2，state entropy 约为 1.665 bits。
-- TSP 的 one-hot permutation 约束随城市数按平方增长，raw Ising state 在 12 城市以后很难直接满足可行性；但作为 route seed，经 2-opt repair 后仍能得到接近参考路线的结果。
-- Weighted Max-Cut 更贴近 Ising 原生二值结构，10/16/24 节点都达到 reference cut，32 节点 best cut 也达到 reference，median cut ratio 约为 0.987。
-- Portfolio Selection 通过 cardinality penalty 控制选股数量，小规模可达到 exact reference，规模增大后仍保持可行 cardinality，但 objective gap 增大。
-
-## 数据与版本管理说明
-
-- 已提交的 `*_output/` 目录是当前实验快照，用于迁移后快速检查结果是否一致。
-- `*.zip`、`__pycache__/`、`.pycache_check/`、`.venv/`、`pptx_extracted_images/` 属于本地缓存或可再生成文件，默认不进入 Git。
-- 如果需要重新打包 Overleaf 材料，可用当前 `mtj_ising_application_results_overleaf.tex` 和 `mtj_ising_application_demos_output/` 中的图重新生成 zip。
-- 若新设备没有图形后端，脚本仍可生成 CSV/JSON；安装 `matplotlib` 后会额外输出 PNG。
-
-## GitHub 同步
-
-默认远端：
-
-```text
-origin https://github.com/loopist666/sMTJ-annealing-accelerator.git
-```
-
-常用同步命令：
-
-```powershell
-git status --short --branch
-git add README.md requirements.txt .gitignore mtj_ising_application_demos.py mtj_ising_application_demos_output mtj_ising_application_results.md mtj_ising_application_results_overleaf.tex
-git commit -m "Document MTJ Ising application demos"
-git push origin main
-```
+P-dit 方法参考：Christian Duffee *et al.*, “P-dits: Probabilistic d-dimensional bits for extended-variable probabilistic computing,” *Physical Review Applied* **24**, 044077 (2025), DOI: [10.1103/4ngx-cmz7](https://doi.org/10.1103/4ngx-cmz7).

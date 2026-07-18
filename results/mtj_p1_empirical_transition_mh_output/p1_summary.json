@@ -1,0 +1,423 @@
+{
+  "stage": "P1",
+  "objective": "empirical-transition MH and K=6 state-geometry comparison",
+  "config": {
+    "n_variables": 4,
+    "n_states": 6,
+    "beta": 2.5,
+    "coupling": 1.0,
+    "field_strength": 0.55,
+    "runs": 64,
+    "updates": 8000,
+    "burn_fraction": 0.25,
+    "event_probability_cap": 0.5,
+    "seed": 20260718,
+    "dataset": "selected_curve"
+  },
+  "proposal": {
+    "definition": "q_kl = r_k P_kl for k != l",
+    "event_probability": "dt * sum_l!=k q_kl",
+    "acceptance": "min(1, exp(-beta DeltaE) q_lk/q_kl)",
+    "variable_selection": "one of four variables uniformly per update",
+    "dt": 0.8259450857142862,
+    "event_probability_cap": 0.5,
+    "event_probabilities_by_state": [
+      0.32515999062661116,
+      0.5,
+      0.2180793068005011,
+      0.21386730146700586,
+      0.13624748281652108,
+      0.11502812676417144
+    ]
+  },
+  "physical_profile": {
+    "dataset": "selected_curve",
+    "selected_k": 6,
+    "dwell_count": 136,
+    "state_means": [
+      -0.08304741176470588,
+      -0.06464044270833333,
+      -0.058045759493670884,
+      -0.05506793709528215,
+      -0.0531666243902439,
+      -0.051501811145510834
+    ],
+    "exit_rates": [
+      0.42180250269484926,
+      0.6226633261471063,
+      0.27228721258572025,
+      0.2652519893899203,
+      0.171069104142205,
+      0.14797277300976644
+    ],
+    "transition_matrix": [
+      [
+        0.06666666666666667,
+        0.6666666666666666,
+        0.06666666666666667,
+        0.06666666666666667,
+        0.06666666666666667,
+        0.06666666666666667
+      ],
+      [
+        0.25,
+        0.027777777777777776,
+        0.5555555555555556,
+        0.1111111111111111,
+        0.027777777777777776,
+        0.027777777777777776
+      ],
+      [
+        0.06060606060606061,
+        0.24242424242424243,
+        0.030303030303030304,
+        0.6060606060606061,
+        0.030303030303030304,
+        0.030303030303030304
+      ],
+      [
+        0.023809523809523808,
+        0.2619047619047619,
+        0.16666666666666666,
+        0.023809523809523808,
+        0.5,
+        0.023809523809523808
+      ],
+      [
+        0.03571428571428571,
+        0.03571428571428571,
+        0.07142857142857142,
+        0.35714285714285715,
+        0.03571428571428571,
+        0.4642857142857143
+      ],
+      [
+        0.058823529411764705,
+        0.23529411764705882,
+        0.11764705882352941,
+        0.35294117647058826,
+        0.17647058823529413,
+        0.058823529411764705
+      ]
+    ],
+    "q_rates": [
+      [
+        0.0,
+        0.2812016684632328,
+        0.028120166846323284,
+        0.028120166846323284,
+        0.028120166846323284,
+        0.028120166846323284
+      ],
+      [
+        0.15566583153677657,
+        0.0,
+        0.3459240700817257,
+        0.06918481401634514,
+        0.017296203504086286,
+        0.017296203504086286
+      ],
+      [
+        0.01650225530822547,
+        0.06600902123290188,
+        0.0,
+        0.1650225530822547,
+        0.008251127654112735,
+        0.008251127654112735
+      ],
+      [
+        0.006315523556902863,
+        0.06947075912593151,
+        0.044208664898320045,
+        0.0,
+        0.13262599469496014,
+        0.006315523556902863
+      ],
+      [
+        0.006109610862221606,
+        0.006109610862221606,
+        0.012219221724443213,
+        0.06109610862221607,
+        0.0,
+        0.0794249412088809
+      ],
+      [
+        0.008704280765280379,
+        0.034817123061121516,
+        0.017408561530560758,
+        0.052225684591682274,
+        0.026112842295841137,
+        0.0
+      ]
+    ],
+    "dwell_preserving_resampling": {
+      "method": "duration-proportional integer apportionment with one-sample dwell lower bound",
+      "target_steps": 8000,
+      "dwell_count": 136,
+      "all_dwell_boundaries_preserved": true,
+      "new_transition_count": 135,
+      "expected_dwell_transition_count": 135,
+      "new_phantom_transition_count": 0,
+      "legacy_transition_count": 160,
+      "legacy_phantom_transition_count": 1,
+      "legacy_compressed_path_matches_dwells": false,
+      "new_occupancy_l1_error": 0.000566275892798819,
+      "legacy_occupancy_l1_error": 0.004428361997200779,
+      "original_time_occupancy": [
+        0.041503910951440154,
+        0.09371813399956937,
+        0.19288221446055218,
+        0.2639973189449998,
+        0.2501536045408474,
+        0.15774481710259106
+      ],
+      "new_sample_occupancy": [
+        0.041625,
+        0.093875,
+        0.192875,
+        0.26375,
+        0.250125,
+        0.15775
+      ],
+      "legacy_sample_occupancy": [
+        0.041375,
+        0.092875,
+        0.19425,
+        0.2635,
+        0.251,
+        0.157
+      ],
+      "min_samples_per_dwell": 2,
+      "max_samples_per_dwell": 381
+    }
+  },
+  "geometry_definitions": {
+    "gray_binary": "six 3-bit Gray-code vertices, normalized Euclidean/Hamming geometry",
+    "ordered_1d": "six evenly spaced scalar states on [-1,1]",
+    "isotropic_6state": "six orthogonal one-hot vectors; every distinct pair is equidistant",
+    "energy": "normalized ring-plus-chords pair distance and site-preference distance; each geometry divided by its exact raw-energy standard deviation",
+    "comparison_note": "Each geometry induces a different exact target. KL and DB compare each sampler to its own target; direct q-versus-distance compatibility provides the target-independent device interpretation test."
+  },
+  "geometry_compatibility": [
+    {
+      "geometry": "gray_binary",
+      "label": "Gray-coded binary",
+      "embedding_dimension": 3,
+      "distinct_nonzero_distances": 3,
+      "q_weighted_mean_normalized_distance": 0.6369426132931219,
+      "proposal_locality_score": 0.36305738670687815,
+      "mean_nearest_geometry_transition_mass": 0.7320341065513829,
+      "mean_direction_entropy_fraction": 0.7188262895647896,
+      "mean_direction_kl_from_uniform": 0.4525316295541952,
+      "symmetric_rate_vs_negative_distance_pearson": 0.5529542278885982,
+      "symmetric_rate_vs_negative_distance_spearman": 0.5313148617302949
+    },
+    {
+      "geometry": "ordered_1d",
+      "label": "Ordered 1D P-dit",
+      "embedding_dimension": 1,
+      "distinct_nonzero_distances": 5,
+      "q_weighted_mean_normalized_distance": 0.29151201055586307,
+      "proposal_locality_score": 0.7084879894441369,
+      "mean_nearest_geometry_transition_mass": 0.6900226373295478,
+      "mean_direction_entropy_fraction": 0.7188262895647896,
+      "mean_direction_kl_from_uniform": 0.4525316295541952,
+      "symmetric_rate_vs_negative_distance_pearson": 0.6452177501613304,
+      "symmetric_rate_vs_negative_distance_spearman": 0.663683803084112
+    },
+    {
+      "geometry": "isotropic_6state",
+      "label": "Isotropic six-state P-dit",
+      "embedding_dimension": 6,
+      "distinct_nonzero_distances": 1,
+      "q_weighted_mean_normalized_distance": 0.9999999999999998,
+      "proposal_locality_score": 2.220446049250313e-16,
+      "mean_nearest_geometry_transition_mass": 1.0,
+      "mean_direction_entropy_fraction": 0.7188262895647896,
+      "mean_direction_kl_from_uniform": 0.4525316295541952,
+      "symmetric_rate_vs_negative_distance_pearson": null,
+      "symmetric_rate_vs_negative_distance_spearman": null
+    }
+  ],
+  "geometry_ground_states": {
+    "gray_binary": {
+      "count": 2,
+      "states": [
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          3,
+          3,
+          3,
+          3
+        ]
+      ],
+      "raw_energy_min": 0.7333333333333335,
+      "normalization_scale": 0.7398362533397711
+    },
+    "ordered_1d": {
+      "count": 1,
+      "states": [
+        [
+          2,
+          2,
+          3,
+          3
+        ]
+      ],
+      "raw_energy_min": 0.28400000000000003,
+      "normalization_scale": 0.7996425590363624
+    },
+    "isotropic_6state": {
+      "count": 4,
+      "states": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          3,
+          3,
+          3,
+          3
+        ],
+        [
+          5,
+          5,
+          5,
+          5
+        ]
+      ],
+      "raw_energy_min": 1.6500000000000001,
+      "normalization_scale": 0.8704245452012994
+    }
+  },
+  "summaries": [
+    {
+      "geometry": "gray_binary",
+      "label": "Gray-coded binary",
+      "runs": 64,
+      "updates_per_run": 8000,
+      "exact_state_count": 1296,
+      "ground_state_count": 2,
+      "energy_scale_raw_std": 0.7398362533397711,
+      "success_probability": 1.0,
+      "trials_to_solution_99": 1.0,
+      "mean_trial_wall_time_seconds": 0.026040081999999975,
+      "time_to_solution_99_seconds": 0.026040081999999975,
+      "mean_best_energy_gap": 0.0,
+      "median_best_energy_gap": 0.0,
+      "mean_final_energy_gap": 1.0285215094082965,
+      "median_final_energy_gap": 1.2164853992180262,
+      "mean_first_hit_update_successes": 618.578125,
+      "median_first_hit_update_successes": 333.5,
+      "between_trace_best_gap_variance": 0.0,
+      "between_trace_final_gap_variance": 0.7284993665343051,
+      "proposal_event_rate": 0.235783203125,
+      "mh_acceptance_given_event": 0.21893456813644685,
+      "accepted_changes_per_run": 412.96875,
+      "mean_proposed_geometry_distance": 0.6331261748544669,
+      "mean_accepted_geometry_distance": 0.610322380208697,
+      "stationary_kl_empirical_to_exact": 0.0294650777891382,
+      "stationary_total_variation": 0.070404715587399,
+      "empirical_detailed_balance_flux_error": 0.009801112685447578,
+      "mean_energy_iat_updates": 137.10398282386163,
+      "median_energy_iat_updates": 121.30604670210971,
+      "effective_energy_samples": 2800.793909053155,
+      "post_burn_unique_state_fraction": 0.6311728395061729,
+      "post_burn_samples": 384000,
+      "theoretical_db_checked_directed_pairs": 25920,
+      "theoretical_db_max_abs_flux_error": 2.168404344971009e-19,
+      "theoretical_db_max_relative_flux_error": 9.337760260528687e-16,
+      "theoretical_db_mean_relative_flux_error": 2.207940059532164e-16
+    },
+    {
+      "geometry": "ordered_1d",
+      "label": "Ordered 1D P-dit",
+      "runs": 64,
+      "updates_per_run": 8000,
+      "exact_state_count": 1296,
+      "ground_state_count": 1,
+      "energy_scale_raw_std": 0.7996425590363624,
+      "success_probability": 1.0,
+      "trials_to_solution_99": 1.0,
+      "mean_trial_wall_time_seconds": 0.026839980578125106,
+      "time_to_solution_99_seconds": 0.026839980578125106,
+      "mean_best_energy_gap": 0.0,
+      "median_best_energy_gap": 0.0,
+      "mean_final_energy_gap": 0.5608755998936336,
+      "median_final_energy_gap": 0.5352391454949279,
+      "mean_first_hit_update_successes": 1339.1875,
+      "median_first_hit_update_successes": 713.5,
+      "between_trace_best_gap_variance": 0.0,
+      "between_trace_final_gap_variance": 0.13139238632291977,
+      "proposal_event_rate": 0.250998046875,
+      "mh_acceptance_given_event": 0.4902070639867404,
+      "accepted_changes_per_run": 984.328125,
+      "mean_proposed_geometry_distance": 0.26927432825674397,
+      "mean_accepted_geometry_distance": 0.25772429654819873,
+      "stationary_kl_empirical_to_exact": 0.023947506868920783,
+      "stationary_total_variation": 0.0713952851978866,
+      "empirical_detailed_balance_flux_error": 0.02424622853808968,
+      "mean_energy_iat_updates": 54.31038536085203,
+      "median_energy_iat_updates": 52.31741886596755,
+      "effective_energy_samples": 7070.470913594264,
+      "post_burn_unique_state_fraction": 0.8171296296296297,
+      "post_burn_samples": 384000,
+      "theoretical_db_checked_directed_pairs": 25920,
+      "theoretical_db_max_abs_flux_error": 8.131516293641283e-20,
+      "theoretical_db_max_relative_flux_error": 1.0870886239185016e-15,
+      "theoretical_db_mean_relative_flux_error": 1.45787909949865e-16
+    },
+    {
+      "geometry": "isotropic_6state",
+      "label": "Isotropic six-state P-dit",
+      "runs": 64,
+      "updates_per_run": 8000,
+      "exact_state_count": 1296,
+      "ground_state_count": 4,
+      "energy_scale_raw_std": 0.8704245452012994,
+      "success_probability": 0.96875,
+      "trials_to_solution_99": 2.0,
+      "mean_trial_wall_time_seconds": 0.02504926235937496,
+      "time_to_solution_99_seconds": 0.05009852471874992,
+      "mean_best_energy_gap": 0.019746111359974484,
+      "median_best_energy_gap": 0.0,
+      "mean_final_energy_gap": 0.15078848674889606,
+      "median_final_energy_gap": 0.0,
+      "mean_first_hit_update_successes": 901.1935483870968,
+      "median_first_hit_update_successes": 241.0,
+      "between_trace_best_gap_variance": 0.012279036270786959,
+      "between_trace_final_gap_variance": 0.2796386015451093,
+      "proposal_event_rate": 0.218681640625,
+      "mh_acceptance_given_event": 0.01721966686017952,
+      "accepted_changes_per_run": 30.125,
+      "mean_proposed_geometry_distance": 1.0,
+      "mean_accepted_geometry_distance": 1.0,
+      "stationary_kl_empirical_to_exact": 0.0824929811277221,
+      "stationary_total_variation": 0.17050314351041818,
+      "empirical_detailed_balance_flux_error": 0.0011330013335555925,
+      "mean_energy_iat_updates": 163.04068785834903,
+      "median_energy_iat_updates": 91.05983060480027,
+      "effective_energy_samples": 2355.240308686762,
+      "post_burn_unique_state_fraction": 0.18518518518518517,
+      "post_burn_samples": 384000,
+      "theoretical_db_checked_directed_pairs": 25920,
+      "theoretical_db_max_abs_flux_error": 6.776263578034403e-21,
+      "theoretical_db_max_relative_flux_error": 1.0468191284559246e-15,
+      "theoretical_db_mean_relative_flux_error": 2.1929502051107388e-16
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+solver,label,updates,success_probability
+physical_gray_pbit,A: physical Gray P-bit,10,0.03125
+physical_gray_pbit,A: physical Gray P-bit,25,0.046875
+physical_gray_pbit,A: physical Gray P-bit,50,0.078125
+physical_gray_pbit,A: physical Gray P-bit,100,0.125
+physical_gray_pbit,A: physical Gray P-bit,200,0.140625
+physical_gray_pbit,A: physical Gray P-bit,500,0.25
+physical_gray_pbit,A: physical Gray P-bit,1000,0.390625
+physical_gray_pbit,A: physical Gray P-bit,2000,0.46875
+physical_gray_pbit,A: physical Gray P-bit,4000,0.578125
+software_gray_glauber,B: software Gray Glauber,10,0.0625
+software_gray_glauber,B: software Gray Glauber,25,0.125
+software_gray_glauber,B: software Gray Glauber,50,0.21875
+software_gray_glauber,B: software Gray Glauber,100,0.359375
+software_gray_glauber,B: software Gray Glauber,200,0.5625
+software_gray_glauber,B: software Gray Glauber,500,0.890625
+software_gray_glauber,B: software Gray Glauber,1000,0.96875
+software_gray_glauber,B: software Gray Glauber,2000,1.0
+software_gray_glauber,B: software Gray Glauber,4000,1.0
+direct_pdit,C: direct P-dit,10,0.125
+direct_pdit,C: direct P-dit,25,0.171875
+direct_pdit,C: direct P-dit,50,0.328125
+direct_pdit,C: direct P-dit,100,0.703125
+direct_pdit,C: direct P-dit,200,0.953125
+direct_pdit,C: direct P-dit,500,1.0
+direct_pdit,C: direct P-dit,1000,1.0
+direct_pdit,C: direct P-dit,2000,1.0
+direct_pdit,C: direct P-dit,4000,1.0
+physical_mh_pdit,D: physical MH P-dit,10,0.015625
+physical_mh_pdit,D: physical MH P-dit,25,0.015625
+physical_mh_pdit,D: physical MH P-dit,50,0.03125
+physical_mh_pdit,D: physical MH P-dit,100,0.0625
+physical_mh_pdit,D: physical MH P-dit,200,0.125
+physical_mh_pdit,D: physical MH P-dit,500,0.296875
+physical_mh_pdit,D: physical MH P-dit,1000,0.421875
+physical_mh_pdit,D: physical MH P-dit,2000,0.59375
+physical_mh_pdit,D: physical MH P-dit,4000,0.6875

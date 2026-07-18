@@ -18,10 +18,11 @@ from mtj_physical_kstate_demo import (
     run_kstate_hazard_sa,
     stability_dataframe,
 )
+from project_paths import RESULTS_DIR
 
 
 CURVE_NAME = "selected_curve"
-OUTPUT_DIR = Path("mtj_physical_kstate_selected_curve_output")
+OUTPUT_DIR = RESULTS_DIR / "mtj_physical_kstate_selected_curve_output"
 RUNS = 40
 
 

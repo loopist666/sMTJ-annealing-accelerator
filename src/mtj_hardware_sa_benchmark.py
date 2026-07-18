@@ -18,9 +18,10 @@ from mtj_hardware_sa_demo import (
     run_hardware_sa,
     summarize_runs,
 )
+from project_paths import RESULTS_DIR
 
 
-OUTPUT_DIR = Path("mtj_benchmark_output")
+OUTPUT_DIR = RESULTS_DIR / "mtj_benchmark_output"
 
 
 def build_spin_glass_instance(n_spins: int, density: float, seed: int, field_scale: int = 2) -> tuple[np.ndarray, np.ndarray]:

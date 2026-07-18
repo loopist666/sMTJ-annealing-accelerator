@@ -1,0 +1,161 @@
+{
+  "stage": "P0 TSP application comparison",
+  "paper": {
+    "doi": "10.1103/4ngx-cmz7",
+    "kernel": "restricted reachable-set P-dit heat bath (paper Eq. 11)",
+    "swap_probability": "1 / (1 + exp(beta * (L_swap - L_current)))"
+  },
+  "comparison_design": {
+    "dataset": "good",
+    "profile_steps": 900,
+    "runs_per_method": 24,
+    "cycles": 45,
+    "equal_element_update_budget": 81000,
+    "original_representation": "N^2 binary spins with two one-hot penalties",
+    "pdit_representation": "N categorical positions in a fixed-origin permutation",
+    "pdit_uses_gray_code": false,
+    "pdit_uses_onehot_penalty": false,
+    "pdit_raw_route_always_feasible": true,
+    "beta_start": 0.08,
+    "beta_end": 4.0,
+    "hazard_gain": 8.0
+  },
+  "resampling_validation": {
+    "method": "duration-proportional integer apportionment with one-sample dwell lower bound",
+    "target_steps": 900,
+    "dwell_count": 78,
+    "all_dwell_boundaries_preserved": true,
+    "new_transition_count": 77,
+    "expected_dwell_transition_count": 77,
+    "new_phantom_transition_count": 0,
+    "legacy_transition_count": 87,
+    "legacy_phantom_transition_count": 3,
+    "legacy_compressed_path_matches_dwells": false,
+    "new_occupancy_l1_error": 0.008443731529001297,
+    "legacy_occupancy_l1_error": 0.05377812443997242,
+    "original_time_occupancy": [
+      0.06600052978881887,
+      0.35199982666890267,
+      0.464998228531851,
+      0.1170014150104274
+    ],
+    "new_sample_occupancy": [
+      0.07,
+      0.3522222222222222,
+      0.46111111111111114,
+      0.11666666666666667
+    ],
+    "legacy_sample_occupancy": [
+      0.051111111111111114,
+      0.3788888888888889,
+      0.45444444444444443,
+      0.11555555555555555
+    ],
+    "min_samples_per_dwell": 1,
+    "max_samples_per_dwell": 212
+  },
+  "references": [
+    {
+      "n_cities": 8,
+      "reference_length": 23.34566509044613,
+      "reference_method": "exact",
+      "state_space": {
+        "original_binary_variables": 64,
+        "original_total_binary_states_log10": 19.265919722494793,
+        "fixed_origin_valid_permutations": 5040,
+        "original_fixed_origin_feasible_fraction": 2.732189474663476e-16,
+        "pdit_categorical_variables": 8,
+        "pdit_reachable_states": 5040,
+        "pdit_feasible_fraction": 1.0
+      }
+    },
+    {
+      "n_cities": 12,
+      "reference_length": 34.64495898416017,
+      "reference_method": "nearest-neighbor all-start + 2-opt",
+      "state_space": {
+        "original_binary_variables": 144,
+        "original_total_binary_states_log10": 43.348319375613286,
+        "fixed_origin_valid_permutations": 39916800,
+        "original_fixed_origin_feasible_fraction": 1.7899312173043515e-36,
+        "pdit_categorical_variables": 12,
+        "pdit_reachable_states": 39916800,
+        "pdit_feasible_fraction": 1.0
+      }
+    }
+  ],
+  "method_summary": [
+    {
+      "n_cities": 8,
+      "method": "original_onehot_ising",
+      "variables": 64,
+      "runs": 24,
+      "raw_feasible_rate": 0.4166666666666667,
+      "median_onehot_violation": 1.0,
+      "best_route_ratio": 1.2547335238058184,
+      "median_route_ratio": 1.4682655398808695,
+      "best_two_opt_ratio": 1.0,
+      "median_two_opt_ratio": 1.155198962699751,
+      "raw_reference_hit_rate": 0.0,
+      "two_opt_reference_hit_rate": 0.25,
+      "mean_update_attempts": 81000.0,
+      "mean_clock_ticks": 40500.0,
+      "mean_change_rate": 0.1108019547325103,
+      "mean_wall_time_seconds": 0.051617544958086604
+    },
+    {
+      "n_cities": 8,
+      "method": "p0_permutation_pdit",
+      "variables": 8,
+      "runs": 24,
+      "raw_feasible_rate": 1.0,
+      "median_onehot_violation": 0.0,
+      "best_route_ratio": 1.0,
+      "median_route_ratio": 1.0000000000000002,
+      "best_two_opt_ratio": 1.0,
+      "median_two_opt_ratio": 1.0000000000000002,
+      "raw_reference_hit_rate": 1.0,
+      "two_opt_reference_hit_rate": 1.0,
+      "mean_update_attempts": 81000.0,
+      "mean_clock_ticks": 210705.58333333334,
+      "mean_change_rate": 0.05135699588477366,
+      "mean_wall_time_seconds": 0.16984437154133047
+    },
+    {
+      "n_cities": 12,
+      "method": "original_onehot_ising",
+      "variables": 144,
+      "runs": 24,
+      "raw_feasible_rate": 0.0,
+      "median_onehot_violation": 10.5,
+      "best_route_ratio": 1.5202119564351153,
+      "median_route_ratio": 1.7617820823092396,
+      "best_two_opt_ratio": 0.9999999999999998,
+      "median_two_opt_ratio": 1.0911997467923844,
+      "raw_reference_hit_rate": 0.0,
+      "two_opt_reference_hit_rate": 0.08333333333333333,
+      "mean_update_attempts": 81000.0,
+      "mean_clock_ticks": 40500.0,
+      "mean_change_rate": 0.1276687242798354,
+      "mean_wall_time_seconds": 0.05424853820810919
+    },
+    {
+      "n_cities": 12,
+      "method": "p0_permutation_pdit",
+      "variables": 12,
+      "runs": 24,
+      "raw_feasible_rate": 1.0,
+      "median_onehot_violation": 0.0,
+      "best_route_ratio": 0.9999999999999998,
+      "median_route_ratio": 1.0,
+      "best_two_opt_ratio": 0.9999999999999998,
+      "median_two_opt_ratio": 1.0,
+      "raw_reference_hit_rate": 0.8333333333333334,
+      "two_opt_reference_hit_rate": 0.8333333333333334,
+      "mean_update_attempts": 81000.0,
+      "mean_clock_ticks": 210705.58333333334,
+      "mean_change_rate": 0.05111625514403292,
+      "mean_wall_time_seconds": 0.19332972912525292
+    }
+  ]
+}

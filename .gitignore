@@ -1,9 +1,12 @@
 __pycache__/
 .pycache_check/
+.DS_Store
 *.pyc
 *.pyo
 .venv/
 .pytest_cache/
+.ruff_cache/
+.mypy_cache/
 *.zip
 ~$*.xlsx
 pptx_extracted_images/

@@ -12,11 +12,12 @@ try:
 except Exception:
     plt = None
 
+from project_paths import DATA_DIR, RESULTS_DIR
 
-GOOD_FILE = "simulated annealing.xlsx"
-BAD_FILE = "simulated annealing_bad.xlsx"
+GOOD_FILE = DATA_DIR / "simulated annealing.xlsx"
+BAD_FILE = DATA_DIR / "simulated annealing_bad.xlsx"
 SHEET_NAME = "Sheet1"
-OUTPUT_DIR = Path("mtj_sa_output")
+OUTPUT_DIR = RESULTS_DIR / "mtj_sa_output"
 
 
 @dataclass

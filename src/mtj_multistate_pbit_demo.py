@@ -19,9 +19,10 @@ from mtj_hardware_sa_demo import (
     load_dataset,
     summarize_runs,
 )
+from project_paths import RESULTS_DIR
 
 
-OUTPUT_DIR = Path("mtj_multistate_pbit_output")
+OUTPUT_DIR = RESULTS_DIR / "mtj_multistate_pbit_output"
 N_STATES = 4
 STEPS = 420
 

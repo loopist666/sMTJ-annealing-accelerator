@@ -5,10 +5,10 @@
 相关脚本与输出：
 
 - 主脚本：`mtj_ising_application_demos.py`
-- 总结文件：`mtj_ising_application_demos_output/application_demo_summary.json`
-- TSP scaling：`mtj_ising_application_demos_output/tsp_scaling_summary.csv`
-- Max-Cut scaling：`mtj_ising_application_demos_output/maxcut_scaling_summary.csv`
-- Portfolio scaling：`mtj_ising_application_demos_output/portfolio_scaling_summary.csv`
+- 总结文件：`results/mtj_ising_application_demos_output/application_demo_summary.json`
+- TSP scaling：`results/mtj_ising_application_demos_output/tsp_scaling_summary.csv`
+- Max-Cut scaling：`results/mtj_ising_application_demos_output/maxcut_scaling_summary.csv`
+- Portfolio scaling：`results/mtj_ising_application_demos_output/portfolio_scaling_summary.csv`
 
 ## 1. Physical K-State Ising Solver
 
@@ -188,11 +188,11 @@ For 8 cities, the reference is exact optimum. For 12/16/20/24 cities, the refere
 
 对应图：
 
-![TSP 24-city route](mtj_ising_application_demos_output/tsp_route.png)
+![TSP 24-city route](../results/mtj_ising_application_demos_output/tsp_route.png)
 
-![TSP decoded route trend](mtj_ising_application_demos_output/tsp_decoded_route_trend.png)
+![TSP decoded route trend](../results/mtj_ising_application_demos_output/tsp_decoded_route_trend.png)
 
-![TSP scaling convergence](mtj_ising_application_demos_output/convergence.png)
+![TSP scaling convergence](../results/mtj_ising_application_demos_output/convergence.png)
 
 ## 4. Demo 2: Weighted Max-Cut
 
@@ -264,9 +264,9 @@ $$
 
 对应图：
 
-![Max-Cut convergence](mtj_ising_application_demos_output/maxcut_convergence.png)
+![Max-Cut convergence](../results/mtj_ising_application_demos_output/maxcut_convergence.png)
 
-![Max-Cut partition](mtj_ising_application_demos_output/maxcut_partition.png)
+![Max-Cut partition](../results/mtj_ising_application_demos_output/maxcut_partition.png)
 
 ## 5. Demo 3: Cardinality-Constrained Portfolio Selection
 
@@ -347,9 +347,9 @@ $$
 
 对应图：
 
-![Portfolio convergence](mtj_ising_application_demos_output/portfolio_convergence.png)
+![Portfolio convergence](../results/mtj_ising_application_demos_output/portfolio_convergence.png)
 
-![Portfolio selection](mtj_ising_application_demos_output/portfolio_selection.png)
+![Portfolio selection](../results/mtj_ising_application_demos_output/portfolio_selection.png)
 
 ## 6. Cross-Problem Comparison
 
@@ -421,4 +421,3 @@ $$
 $$
 
 For TSP, the repair is 2-opt. For Max-Cut, no repair is needed. For Portfolio, the penalty formulation already produced feasible cardinality in these runs.
-

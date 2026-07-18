@@ -20,9 +20,10 @@ from mtj_hardware_sa_demo import (
     load_dataset,
     summarize_runs,
 )
+from project_paths import RESULTS_DIR
 
 
-OUTPUT_DIR = Path("mtj_physical_kstate_output")
+OUTPUT_DIR = RESULTS_DIR / "mtj_physical_kstate_output"
 
 
 @dataclass

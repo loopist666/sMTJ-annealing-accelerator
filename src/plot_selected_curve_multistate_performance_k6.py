@@ -9,13 +9,14 @@ try:
 except Exception:
     plt = None
 
+from project_paths import RESULTS_DIR
 
-INPUT_DIR = Path("mtj_multistate_sweep_output")
-OUTPUT_PATH = Path("selected_curve_multistate_best_kstate_performance.png")
+INPUT_DIR = RESULTS_DIR / "mtj_multistate_sweep_output"
+OUTPUT_PATH = RESULTS_DIR / "comparisons" / "selected_curve_multistate_k6_performance.png"
 
 SOURCE_DATASET = "bad"
 TRACE_LABEL = "selected trace"
-BEST_K = 8
+MODEL_K = 6
 PBIT_DIMS = 3
 
 INSTANCE_LABELS = {
@@ -30,7 +31,7 @@ INSTANCE_LABELS = {
 }
 
 
-def annotate_heatmap(ax, values: np.ndarray, fmt, text_color="#202020") -> None:
+def annotate_heatmap(ax, values: np.ndarray, fmt) -> None:
     for row in range(values.shape[0]):
         for col in range(values.shape[1]):
             ax.text(
@@ -40,7 +41,7 @@ def annotate_heatmap(ax, values: np.ndarray, fmt, text_color="#202020") -> None:
                 ha="center",
                 va="center",
                 fontsize=10,
-                color=text_color,
+                color="#202020",
             )
 
 
@@ -53,12 +54,12 @@ def main() -> None:
 
     selected_overall = overall[
         (overall["dataset"] == SOURCE_DATASET)
-        & (overall["n_states"] == BEST_K)
+        & (overall["n_states"] == MODEL_K)
         & (overall["pbit_dims"] == PBIT_DIMS)
     ]
     selected_instances = instances[
         (instances["dataset"] == SOURCE_DATASET)
-        & (instances["n_states"] == BEST_K)
+        & (instances["n_states"] == MODEL_K)
         & (instances["pbit_dims"] == PBIT_DIMS)
     ].copy()
 
@@ -76,11 +77,11 @@ def main() -> None:
     hit_values = selected_instances["optimum_hit_rate"].to_numpy(dtype=float) * 100.0
     gap_values = selected_instances["mean_energy_gap"].to_numpy(dtype=float)
 
-    fig = plt.figure(figsize=(15, 9), facecolor="white")
-    grid = fig.add_gridspec(2, 2, height_ratios=[1.0, 1.25], hspace=0.36, wspace=0.24)
+    fig = plt.figure(figsize=(15.5, 9), facecolor="white")
+    grid = fig.add_gridspec(2, 2, height_ratios=[1.0, 1.2], hspace=0.4, wspace=0.34)
 
     fig.suptitle(
-        f"Multistate p-bit performance at best K-state setting (K={BEST_K}, p-bit dims={PBIT_DIMS})",
+        f"Multistate p-bit performance at model-selected K-state setting (K={MODEL_K}, p-bit dims={PBIT_DIMS})",
         fontsize=18,
         fontweight="bold",
         y=0.97,
@@ -100,13 +101,13 @@ def main() -> None:
     ax_gap.set_ylabel("Mean gap to exact optimum")
     ax_gap.set_xticks([0])
     ax_gap.set_xticklabels([TRACE_LABEL])
-    ax_gap.set_ylim(0.0, max(0.9, mean_gap * 1.6))
+    ax_gap.set_ylim(0.0, max(1.0, mean_gap * 1.45))
     ax_gap.grid(True, axis="y", alpha=0.25)
     ax_gap.text(0, mean_gap + 0.04, f"{mean_gap:g}", ha="center", va="bottom", fontweight="bold")
     ax_gap.text(
         0,
         ax_gap.get_ylim()[1] * 0.86,
-        "Mean gap stays below one energy unit",
+        "Model-selected K stays below one energy unit on average",
         ha="center",
         va="center",
         fontsize=9,
@@ -126,7 +127,7 @@ def main() -> None:
     ax_hit.text(
         0,
         0.18,
-        "K=8 reaches the exact optimum in most runs",
+        "K=6 follows the physical model-selected state count",
         ha="center",
         va="center",
         fontsize=9,
@@ -135,7 +136,7 @@ def main() -> None:
 
     ax_hitmap = fig.add_subplot(grid[1, 0])
     hit_matrix = hit_values.reshape(1, -1)
-    hit_img = ax_hitmap.imshow(hit_matrix, cmap="YlGn", vmin=75, vmax=100, aspect="auto")
+    hit_img = ax_hitmap.imshow(hit_matrix, cmap="YlGn", vmin=50, vmax=100, aspect="auto")
     ax_hitmap.set_title("Per-instance optimum hit rate", fontsize=13, fontweight="bold")
     ax_hitmap.set_xticks(np.arange(len(x_labels)))
     ax_hitmap.set_xticklabels(x_labels, rotation=45, ha="right")
@@ -144,7 +145,6 @@ def main() -> None:
     annotate_heatmap(ax_hitmap, hit_matrix, lambda value: f"{value:.0f}%")
     hit_cbar = fig.colorbar(hit_img, ax=ax_hitmap, fraction=0.04, pad=0.02)
     hit_cbar.ax.yaxis.set_major_formatter(PercentFormatter(100.0))
-    hit_cbar.set_label("Hit rate")
 
     ax_gapmap = fig.add_subplot(grid[1, 1])
     gap_matrix = gap_values.reshape(1, -1)

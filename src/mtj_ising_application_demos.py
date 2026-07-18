@@ -14,9 +14,10 @@ except Exception:
 
 from mtj_hardware_sa_demo import ising_energy, summarize_runs
 from mtj_physical_kstate_demo import KStateProfile, build_kstate_profile, compute_energy_scale
+from project_paths import RESULTS_DIR
 
 
-OUTPUT_DIR = Path("mtj_ising_application_demos_output")
+OUTPUT_DIR = RESULTS_DIR / "mtj_ising_application_demos_output"
 
 TSP_COORDS_24 = np.array(
     [

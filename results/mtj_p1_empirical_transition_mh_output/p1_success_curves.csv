@@ -1,0 +1,31 @@
+geometry,label,updates,success_probability
+gray_binary,Gray-coded binary,10,0.0
+gray_binary,Gray-coded binary,25,0.046875
+gray_binary,Gray-coded binary,50,0.078125
+gray_binary,Gray-coded binary,100,0.140625
+gray_binary,Gray-coded binary,200,0.34375
+gray_binary,Gray-coded binary,500,0.59375
+gray_binary,Gray-coded binary,1000,0.859375
+gray_binary,Gray-coded binary,2000,0.921875
+gray_binary,Gray-coded binary,4000,1.0
+gray_binary,Gray-coded binary,8000,1.0
+ordered_1d,Ordered 1D P-dit,10,0.0
+ordered_1d,Ordered 1D P-dit,25,0.015625
+ordered_1d,Ordered 1D P-dit,50,0.03125
+ordered_1d,Ordered 1D P-dit,100,0.078125
+ordered_1d,Ordered 1D P-dit,200,0.1875
+ordered_1d,Ordered 1D P-dit,500,0.390625
+ordered_1d,Ordered 1D P-dit,1000,0.625
+ordered_1d,Ordered 1D P-dit,2000,0.78125
+ordered_1d,Ordered 1D P-dit,4000,0.90625
+ordered_1d,Ordered 1D P-dit,8000,1.0
+isotropic_6state,Isotropic six-state P-dit,10,0.015625
+isotropic_6state,Isotropic six-state P-dit,25,0.03125
+isotropic_6state,Isotropic six-state P-dit,50,0.09375
+isotropic_6state,Isotropic six-state P-dit,100,0.25
+isotropic_6state,Isotropic six-state P-dit,200,0.4375
+isotropic_6state,Isotropic six-state P-dit,500,0.640625
+isotropic_6state,Isotropic six-state P-dit,1000,0.765625
+isotropic_6state,Isotropic six-state P-dit,2000,0.796875
+isotropic_6state,Isotropic six-state P-dit,4000,0.890625
+isotropic_6state,Isotropic six-state P-dit,8000,0.96875

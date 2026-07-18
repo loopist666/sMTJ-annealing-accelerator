@@ -13,9 +13,10 @@ except Exception:
 from mtj_hardware_sa_demo import summarize_runs
 from mtj_hardware_sa_benchmark import build_benchmark_suite
 from mtj_multistate_pbit_demo import build_multistate_profile, run_multidim_pbit_ising
+from project_paths import RESULTS_DIR
 
 
-OUTPUT_DIR = Path("mtj_multistate_sweep_output")
+OUTPUT_DIR = RESULTS_DIR / "mtj_multistate_sweep_output"
 STATE_COUNTS = [4, 6, 8]
 RUNS_PER_INSTANCE = 20
 STEPS = 420
