@@ -12,7 +12,7 @@ try:
 except Exception:
     plt = None
 
-from mtj_hardware_sa_demo import ising_energy, summarize_runs
+from mtj_hardware_sa_demo import summarize_runs
 from mtj_physical_kstate_demo import KStateProfile, build_kstate_profile, compute_energy_scale
 from project_paths import RESULTS_DIR
 
@@ -177,8 +177,15 @@ def run_kstate_ising_solver(
         rand = profile.random_u[state_row, idx % profile.random_u.shape[1]]
         spins[idx] = 1 if bias + 0.75 * (rand - 0.5) >= 0.0 else -1
 
-    current = ising_energy(spins, J, h) + problem.offset
-    local_fields = J @ spins + h
+    # Explicit float arithmetic avoids an Accelerate/NumPy mixed int8-float64
+    # matmul failure while remaining algebraically identical to Ising energy.
+    spin_values = spins.astype(float)
+    local_fields = np.sum(J * spin_values[None, :], axis=1) + h
+    current = float(
+        -0.5 * np.sum(spin_values * (local_fields - h))
+        - np.sum(h * spin_values)
+        + problem.offset
+    )
     best = current
     best_spins = spins.copy()
     accepted = 0
