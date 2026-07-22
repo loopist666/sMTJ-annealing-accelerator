@@ -196,7 +196,8 @@
     "ordered_1d": "six evenly spaced scalar states on [-1,1]",
     "isotropic_6state": "six orthogonal one-hot vectors; every distinct pair is equidistant",
     "energy": "normalized ring-plus-chords pair distance and site-preference distance; each geometry divided by its exact raw-energy standard deviation",
-    "comparison_note": "Each geometry induces a different exact target. KL and DB compare each sampler to its own target; direct q-versus-distance compatibility provides the target-independent device interpretation test."
+    "comparison_note": "Each geometry induces a different exact target. KL and DB compare each sampler to its own target; direct q-versus-distance compatibility provides the target-independent device interpretation test.",
+    "transition_geometry_plot": "Brighter means easier transition. The measured panel shows q_kl; geometry panels show inverse relative off-diagonal distance. The diagonal is excluded, and all isotropic off-diagonal pairs are equally easy."
   },
   "geometry_compatibility": [
     {

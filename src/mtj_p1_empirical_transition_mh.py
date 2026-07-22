@@ -636,6 +636,86 @@ def json_safe(value):
     return value
 
 
+def transition_affinity(distance: np.ndarray) -> np.ndarray:
+    """Convert geometry distance to off-diagonal relative transition ease.
+
+    The nearest distinct state is assigned affinity one and the farthest is
+    assigned zero.  If every distinct pair is equidistant (the isotropic
+    geometry), all off-diagonal transitions receive affinity one because the
+    geometry has no preferred or disfavored direction.  Self-transitions are
+    masked because q_kk is not an event proposal in P1.
+    """
+    distance = np.asarray(distance, dtype=float)
+    mask = ~np.eye(len(distance), dtype=bool)
+    offdiag = distance[mask]
+    minimum = float(np.min(offdiag))
+    maximum = float(np.max(offdiag))
+    affinity = np.zeros_like(distance)
+    if maximum - minimum <= 1e-12:
+        affinity[mask] = 1.0
+    else:
+        affinity[mask] = (maximum - distance[mask]) / (maximum - minimum)
+    np.fill_diagonal(affinity, np.nan)
+    return affinity
+
+
+def save_transition_geometry_plot(
+    problems: dict[str, GeometryProblem],
+    profile: PhysicalProposalProfile,
+    output_dir: Path,
+) -> None:
+    """Plot measured rates and geometry affinity with matching color semantics."""
+    if plt is None:
+        return
+    measured_q = profile.q_rates.copy()
+    np.fill_diagonal(measured_q, np.nan)
+    panels = [
+        ("Measured proposal rate", measured_q, r"$q_{kl}$", float(np.nanmax(measured_q)))
+    ] + [
+        (
+            f"{GEOMETRY_LABELS[name]} affinity",
+            transition_affinity(problems[name].distance),
+            "relative transition affinity",
+            1.0,
+        )
+        for name in GEOMETRY_ORDER
+    ]
+
+    color_map = plt.get_cmap("viridis").copy()
+    color_map.set_bad("#d9d9d9")
+    fig, axes = plt.subplots(1, 4, figsize=(15.0, 4.15))
+    for ax, (title, matrix, colorbar_label, upper) in zip(axes, panels):
+        image = ax.imshow(
+            np.ma.masked_invalid(matrix),
+            cmap=color_map,
+            aspect="equal",
+            vmin=0.0,
+            vmax=max(upper, 1e-15),
+        )
+        ax.set_title(title, fontsize=10)
+        ax.set_xlabel("to state")
+        ax.set_ylabel("from state")
+        ax.set_xticks(range(6))
+        ax.set_yticks(range(6))
+        colorbar = fig.colorbar(image, ax=ax, fraction=0.046, pad=0.04)
+        colorbar.set_label(colorbar_label, fontsize=8)
+    fig.suptitle(
+        "Brighter = easier transition; diagonal excluded (gray)",
+        fontsize=12,
+    )
+    fig.text(
+        0.5,
+        0.015,
+        "Left: measured qₖₗ = rₖPₖₗ. Geometry panels: inverse relative distance; "
+        "isotropic off-diagonal pairs are all equally easy.",
+        ha="center",
+        fontsize=9,
+    )
+    fig.tight_layout(rect=(0.0, 0.07, 1.0, 0.94))
+    fig.savefig(output_dir / "p1_transition_geometry.png", dpi=180)
+    plt.close(fig)
+
+
 def save_plots(
     problems: dict[str, GeometryProblem],
     profile: PhysicalProposalProfile,
@@ -690,21 +770,7 @@ def save_plots(
     fig.savefig(output_dir / "p1_sampling_metrics.png", dpi=180)
     plt.close(fig)
 
-    fig, axes = plt.subplots(1, 4, figsize=(15.0, 3.8))
-    matrices = [("measured q rates", profile.q_rates)] + [
-        (GEOMETRY_LABELS[name], problems[name].distance) for name in GEOMETRY_ORDER
-    ]
-    for ax, (title, matrix) in zip(axes, matrices):
-        image = ax.imshow(matrix, cmap="viridis", aspect="equal")
-        ax.set_title(title, fontsize=10)
-        ax.set_xlabel("to state")
-        ax.set_ylabel("from state")
-        ax.set_xticks(range(6))
-        ax.set_yticks(range(6))
-        fig.colorbar(image, ax=ax, fraction=0.046, pad=0.04)
-    fig.tight_layout()
-    fig.savefig(output_dir / "p1_transition_geometry.png", dpi=180)
-    plt.close(fig)
+    save_transition_geometry_plot(problems, profile, output_dir)
 
     fig, axes = plt.subplots(1, 3, figsize=(14.5, 4.2))
     for ax, name in zip(axes, GEOMETRY_ORDER):
@@ -805,6 +871,7 @@ def run_p1(config: P1Config, output_dir: Path) -> dict:
             "isotropic_6state": "six orthogonal one-hot vectors; every distinct pair is equidistant",
             "energy": "normalized ring-plus-chords pair distance and site-preference distance; each geometry divided by its exact raw-energy standard deviation",
             "comparison_note": "Each geometry induces a different exact target. KL and DB compare each sampler to its own target; direct q-versus-distance compatibility provides the target-independent device interpretation test.",
+            "transition_geometry_plot": "Brighter means easier transition. The measured panel shows q_kl; geometry panels show inverse relative off-diagonal distance. The diagonal is excluded, and all isotropic off-diagonal pairs are equally easy.",
         },
         "geometry_compatibility": compatibility_rows,
         "geometry_ground_states": {
