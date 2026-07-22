@@ -6,7 +6,7 @@
 
 - **P0 — Direct P-dit**：取消 Gray code 和 one-hot penalty，直接使用分类变量，并修复离散状态重采样产生虚假中间状态的问题。
 - **P0 benchmark**：统一比较 physical Gray P-bit、software Gray Glauber、direct P-dit、physical MH P-dit 四种求解器。
-- **P0 TSP**：在 TSP 中比较原始 one-hot Ising 路线和始终保持合法排列的直接 P-dit 路线。
+- **Ordered 1D TSP**：以合法排列为状态，用 K=6 实测 (q_{kl}) 驱动有序交换并做 MH 修正，彻底移除 one-hot penalty。
 - **P1 — Empirical-transition MH**：使用实测退出率和转移矩阵形成
 
   \[
@@ -103,13 +103,24 @@ python src/mtj_p0_four_solver_benchmark.py
 
 ![P0 four-solver success](results/mtj_p0_four_solver_output/four_solver_success.png)
 
-### TSP 对照
+### Ordered 1D empirical-transition TSP 对照
 
 ```bash
 python src/mtj_p0_pdit_tsp_comparison.py
 ```
 
-该实验比较原始 one-hot Ising TSP 与直接 permutation P-dit；后者的所有中间状态都是合法路线。结果位于 [`results/mtj_p0_pdit_tsp_comparison_output/`](results/mtj_p0_pdit_tsp_comparison_output/)。
+该实验比较原始 one-hot Ising TSP 与 ordered 1D permutation P-dit。后者使用
+selected-curve K=6 profile 的 (q_{kl}=r_kP_{kl})，令 |(l-k)| 控制排列交换距离，并按
+
+\[
+A=\min\left(1,e^{-\beta\Delta L}\frac{q_{lk}}{q_{kl}}\right)
+\]
+
+接受。所有中间状态都是合法路线。默认 24-run 结果中，ordered 1D 方法在 8 城市
+达到 100% exact hit，在 12 城市达到 100% raw feasible rate 和 54.2% reference hit；
+one-hot 基线在 12 城市的 raw feasible rate 为 0。详细说明见
+[`docs/mtj_ordered_1d_tsp_mh.md`](docs/mtj_ordered_1d_tsp_mh.md)，结果位于
+[`results/mtj_p0_pdit_tsp_comparison_output/`](results/mtj_p0_pdit_tsp_comparison_output/)。
 
 ## P1：Empirical-transition MH
 
@@ -135,6 +146,22 @@ P1 固定使用 selected-curve 的 K=6 profile，将实测 \(r_k\) 和 \(P_{kl}\
 
 ![P1 sampling metrics](results/mtj_p1_empirical_transition_mh_output/p1_sampling_metrics.png)
 
+### P1 应用对比：ordered 1D P-dit vs binary p-bit
+
+```bash
+python src/mtj_p1_application_comparison.py
+```
+
+该脚本把 selected-curve K=6 器件 profile 用于 8-city TSP、10-node Max-Cut 和
+8-asset Portfolio。在同一 QUBO/Ising 编码、同一初态、同一实测随机流和相同
+single-spin update 预算下，只比较 ordered 1D 与 Gray binary 两种状态解释。
+输出包含逐 run 结果、成功率曲线、配对 bootstrap 区间和汇总图。
+
+结果位于
+[`results/mtj_p1_application_comparison_output/`](results/mtj_p1_application_comparison_output/)，
+实验说明见
+[`docs/mtj_p1_application_comparison.md`](docs/mtj_p1_application_comparison.md)。
+
 ## 其他实验
 
 | 脚本 | 功能 | 输出目录 |
@@ -149,6 +176,7 @@ P1 固定使用 selected-curve 的 K=6 profile，将实测 \(r_k\) 和 \(P_{kl}\
 | `src/mtj_physical_kstate_demo.py` | GMM/HMM K-state 提取与优化 | `results/mtj_physical_kstate_output/` |
 | `src/mtj_physical_kstate_selected_curve.py` | selected-curve K-state 稳定性分析 | `results/mtj_physical_kstate_selected_curve_output/` |
 | `src/mtj_ising_application_demos.py` | TSP、Max-Cut、Portfolio QUBO/Ising | `results/mtj_ising_application_demos_output/` |
+| `src/mtj_p1_application_comparison.py` | ordered 1D P-dit 与 binary p-bit 应用对比 | `results/mtj_p1_application_comparison_output/` |
 
 应用实验的详细说明见 [`docs/mtj_ising_application_results.md`](docs/mtj_ising_application_results.md)。
 
@@ -162,6 +190,7 @@ python src/mtj_p0_four_solver_benchmark.py
 python src/mtj_p0_pdit_tsp_comparison.py
 python src/mtj_p1_empirical_transition_mh.py
 python src/mtj_ising_application_demos.py
+python src/mtj_p1_application_comparison.py
 ```
 
 ## 数据与结果管理
