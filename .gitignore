@@ -10,3 +10,4 @@ __pycache__/
 *.zip
 ~$*.xlsx
 pptx_extracted_images/
+tmp/

@@ -1,4 +1,4 @@
-# Ordered 1D P-dit Application Comparison
+# Diagnostic Only: Fixed-Encoding Ordered 1D Embedding Ablation
 
 ## 1. 目的
 
@@ -35,7 +35,8 @@ drive 的数值尺度可比。
 | 8-asset Portfolio | 8 | 45,000 | exact feasible portfolio |
 
 这里保持原 application 的 one-hot TSP 编码，以隔离随机器件状态解释的影响；不与
-`mtj_p0_pdit_tsp_comparison.py` 中改变状态空间的 direct permutation P-dit 混为一谈。
+`src/benchmarks/tsp_binary_pbit_vs_ordered_1d_mh.py` 中改变状态空间的 direct permutation
+P-dit 混为一谈。本实验不作为当前 TSP 主性能对比。
 
 ## 3. 结果
 

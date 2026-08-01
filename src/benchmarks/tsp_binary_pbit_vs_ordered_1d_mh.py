@@ -1,7 +1,9 @@
-"""Compare one-hot Ising TSP with ordered 1D empirical-transition P-dit.
+"""End-to-end TSP comparison for binary p-bits and ordered 1D P-dits.
 
-The existing application problem and K-state Ising solver are reused as the
-one-hot baseline.
+The baseline is the binary p-bit + one-hot Ising/QUBO path.  The proposed
+method combines direct-permutation encoding with an ordered 1D
+empirical-transition Metropolis-Hastings kernel.  This is intentionally a
+complete-method comparison, not a fixed-encoding ablation.
 
 The route is represented directly as a fixed-origin permutation.  The measured
 K=6 selected-curve profile supplies the ordered device state and the empirical
@@ -19,9 +21,14 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
+
+SRC_DIR = Path(__file__).resolve().parents[1]
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
 
 import numpy as np
 import pandas as pd
@@ -46,7 +53,7 @@ from mtj_p0_direct_pdit_partition import P0PhysicalSource, build_p0_physical_sou
 from project_paths import RESULTS_DIR
 
 
-OUTPUT_DIR = RESULTS_DIR / "mtj_p0_pdit_tsp_comparison_output"
+OUTPUT_DIR = RESULTS_DIR / "benchmarks" / "tsp_binary_pbit_vs_ordered_1d_mh"
 PAPER_DOI = "10.1103/4ngx-cmz7"
 
 
@@ -324,7 +331,7 @@ def run_permutation_pdit_tsp(
     )
 
 
-def run_original_method(
+def run_binary_pbit_onehot_method(
     profile,
     problem,
     runs: int,
@@ -340,7 +347,7 @@ def run_original_method(
         wall = time.perf_counter() - start_wall
         rows.append(
             {
-                "method": "original_onehot_ising",
+                "method": "binary_pbit_onehot_ising",
                 "run_idx": run_idx,
                 "route_length": float(decoded["route_length"]),
                 "two_opt_length": float(decoded["two_opt_route_length"]),
@@ -458,10 +465,10 @@ def state_space_comparison(n_cities: int) -> dict:
     log_binary_states = n_cities * n_cities * math.log(2.0)
     log_valid_fraction = math.log(fixed_permutations) - log_binary_states
     return {
-        "original_binary_variables": n_cities * n_cities,
-        "original_total_binary_states_log10": log_binary_states / math.log(10.0),
+        "binary_onehot_variables": n_cities * n_cities,
+        "binary_onehot_total_states_log10": log_binary_states / math.log(10.0),
         "fixed_origin_valid_permutations": fixed_permutations,
-        "original_fixed_origin_feasible_fraction": float(math.exp(log_valid_fraction)),
+        "binary_onehot_fixed_origin_feasible_fraction": float(math.exp(log_valid_fraction)),
         "pdit_categorical_variables": n_cities,
         "pdit_reachable_states": fixed_permutations,
         "pdit_feasible_fraction": 1.0,
@@ -488,12 +495,12 @@ def save_comparison_plot(summary_rows: list[dict], output_dir: Path) -> None:
         return
     frame = pd.DataFrame(summary_rows)
     cities = sorted(frame["n_cities"].unique())
-    methods = ["original_onehot_ising", "ordered_1d_empirical_mh_pdit"]
+    methods = ["binary_pbit_onehot_ising", "ordered_1d_empirical_mh_pdit"]
     labels = {
-        "original_onehot_ising": "Original one-hot Ising",
+        "binary_pbit_onehot_ising": "Binary p-bit + one-hot Ising",
         "ordered_1d_empirical_mh_pdit": "Ordered 1D empirical-MH P-dit",
     }
-    colors = {"original_onehot_ising": "#64748b", "ordered_1d_empirical_mh_pdit": "#d97732"}
+    colors = {"binary_pbit_onehot_ising": "#64748b", "ordered_1d_empirical_mh_pdit": "#d97732"}
 
     fig, axes = plt.subplots(1, 3, figsize=(14, 4.5))
     x = np.arange(len(cities), dtype=float)
@@ -552,8 +559,8 @@ def save_best_routes_plot(
         return
     coords = np.array(problem_metadata["coords"], dtype=float)
     frame = pd.DataFrame([row for row in all_rows if row["n_cities"] == n_cities])
-    methods = ["original_onehot_ising", "ordered_1d_empirical_mh_pdit"]
-    titles = ["Original one-hot Ising (decoded)", "Ordered 1D empirical-MH P-dit"]
+    methods = ["binary_pbit_onehot_ising", "ordered_1d_empirical_mh_pdit"]
+    titles = ["Binary p-bit + one-hot Ising (decoded)", "Ordered 1D empirical-MH P-dit"]
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.8))
     for axis, method, title in zip(axes, methods, titles):
         best = frame[frame["method"] == method].sort_values("route_length").iloc[0]
@@ -598,13 +605,13 @@ def main() -> None:
 
     # The baseline uses the existing K-state/Gray application solver.  The
     # direct route uses the same K=6 fitted profile through q_kl=r_k P_kl.
-    pdit_source, original_profile = build_p0_physical_source(
+    pdit_source, binary_profile = build_p0_physical_source(
         dataset_name=args.dataset,
         steps=args.profile_steps,
     )
     proposal = build_ordered_1d_proposal(
         pdit_source,
-        original_profile.transition_matrix,
+        binary_profile.transition_matrix,
         event_probability_cap=args.event_probability_cap,
     )
     kernel_validation = validate_ordered_1d_mh_kernel(
@@ -614,9 +621,9 @@ def main() -> None:
         beta_end=args.beta_end,
     )
     update_budget = (
-        len(original_profile.step_states)
+        len(binary_profile.step_states)
         * args.cycles
-        * original_profile.state_biases.shape[1]
+        * binary_profile.state_biases.shape[1]
     )
 
     all_rows: list[dict] = []
@@ -631,8 +638,8 @@ def main() -> None:
         reference = reference_tsp(problem.metadata)
         reference_length = float(reference["route_length"])
 
-        original_rows = run_original_method(
-            profile=original_profile,
+        binary_rows = run_binary_pbit_onehot_method(
+            profile=binary_profile,
             problem=problem,
             runs=args.runs,
             cycles=args.cycles,
@@ -649,9 +656,9 @@ def main() -> None:
             beta_end=args.beta_end,
         )
 
-        for row in [*original_rows, *pdit_rows]:
+        for row in [*binary_rows, *pdit_rows]:
             all_rows.append({"n_cities": n_cities, "reference_length": reference_length, **row})
-        summary_rows.append(summarize_method(original_rows, n_cities, n_cities * n_cities))
+        summary_rows.append(summarize_method(binary_rows, n_cities, n_cities * n_cities))
         summary_rows.append(summarize_method(pdit_rows, n_cities, n_cities))
         reference_rows.append(
             {
@@ -687,7 +694,7 @@ def main() -> None:
             "runs_per_method": args.runs,
             "cycles": args.cycles,
             "equal_element_update_budget": update_budget,
-            "original_representation": "N^2 binary spins with two one-hot penalties",
+            "binary_pbit_representation": "N^2 binary spins with two one-hot penalties",
             "pdit_representation": "N categorical positions in a fixed-origin permutation",
             "pdit_uses_gray_code": False,
             "pdit_uses_onehot_penalty": False,
@@ -704,7 +711,7 @@ def main() -> None:
         },
         "empirical_transition_proposal": {
             "exit_rates": pdit_source.exit_rates.tolist(),
-            "transition_matrix": original_profile.transition_matrix.tolist(),
+            "transition_matrix": binary_profile.transition_matrix.tolist(),
             "q_rates": proposal.q_rates.tolist(),
             "all_positive_edges_have_positive_reverse": bool(
                 np.all(~((proposal.q_rates > 0.0) & (proposal.q_rates.T <= 0.0)))

@@ -12,7 +12,7 @@
     "runs_per_method": 24,
     "cycles": 45,
     "equal_element_update_budget": 121500,
-    "original_representation": "N^2 binary spins with two one-hot penalties",
+    "binary_pbit_representation": "N^2 binary spins with two one-hot penalties",
     "pdit_representation": "N categorical positions in a fixed-origin permutation",
     "pdit_uses_gray_code": false,
     "pdit_uses_onehot_penalty": false,
@@ -196,10 +196,10 @@
       "reference_length": 23.34566509044613,
       "reference_method": "exact",
       "state_space": {
-        "original_binary_variables": 64,
-        "original_total_binary_states_log10": 19.265919722494793,
+        "binary_onehot_variables": 64,
+        "binary_onehot_total_states_log10": 19.265919722494793,
         "fixed_origin_valid_permutations": 5040,
-        "original_fixed_origin_feasible_fraction": 2.732189474663476e-16,
+        "binary_onehot_fixed_origin_feasible_fraction": 2.732189474663476e-16,
         "pdit_categorical_variables": 8,
         "pdit_reachable_states": 5040,
         "pdit_feasible_fraction": 1.0
@@ -210,10 +210,10 @@
       "reference_length": 34.64495898416017,
       "reference_method": "nearest-neighbor all-start + 2-opt",
       "state_space": {
-        "original_binary_variables": 144,
-        "original_total_binary_states_log10": 43.348319375613286,
+        "binary_onehot_variables": 144,
+        "binary_onehot_total_states_log10": 43.348319375613286,
         "fixed_origin_valid_permutations": 39916800,
-        "original_fixed_origin_feasible_fraction": 1.7899312173043515e-36,
+        "binary_onehot_fixed_origin_feasible_fraction": 1.7899312173043515e-36,
         "pdit_categorical_variables": 12,
         "pdit_reachable_states": 39916800,
         "pdit_feasible_fraction": 1.0
@@ -223,7 +223,7 @@
   "method_summary": [
     {
       "n_cities": 8,
-      "method": "original_onehot_ising",
+      "method": "binary_pbit_onehot_ising",
       "variables": 64,
       "runs": 24,
       "raw_feasible_rate": 1.0,
@@ -241,7 +241,7 @@
       "mean_mh_acceptance_given_event": 0.22650788751714676,
       "mean_proposed_1d_distance": null,
       "mean_accepted_1d_distance": null,
-      "mean_wall_time_seconds": 0.11795556770833336
+      "mean_wall_time_seconds": 0.12029721704166674
     },
     {
       "n_cities": 8,
@@ -263,11 +263,11 @@
       "mean_mh_acceptance_given_event": 0.07214989685565222,
       "mean_proposed_1d_distance": 1.581432718766015,
       "mean_accepted_1d_distance": 1.0960751275589293,
-      "mean_wall_time_seconds": 0.3166862724583333
+      "mean_wall_time_seconds": 0.34734683337499983
     },
     {
       "n_cities": 12,
-      "method": "original_onehot_ising",
+      "method": "binary_pbit_onehot_ising",
       "variables": 144,
       "runs": 24,
       "raw_feasible_rate": 0.0,
@@ -285,7 +285,7 @@
       "mean_mh_acceptance_given_event": 0.1938624828532236,
       "mean_proposed_1d_distance": null,
       "mean_accepted_1d_distance": null,
-      "mean_wall_time_seconds": 0.11475962495833321
+      "mean_wall_time_seconds": 0.12384249824999971
     },
     {
       "n_cities": 12,
@@ -307,7 +307,7 @@
       "mean_mh_acceptance_given_event": 0.09469571152787393,
       "mean_proposed_1d_distance": 1.7440613144299686,
       "mean_accepted_1d_distance": 1.1073249387109658,
-      "mean_wall_time_seconds": 0.2674584913749998
+      "mean_wall_time_seconds": 0.2888748194166661
     }
   ]
 }
