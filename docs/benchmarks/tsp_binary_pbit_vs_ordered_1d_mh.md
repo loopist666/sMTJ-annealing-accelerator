@@ -82,7 +82,29 @@ ordered 1D 的 proposal event rate 为 8 城市 0.348、12 城市 0.250；给定
 MH acceptance 分别为 0.072 和 0.095。被接受的平均 1D move distance 约为 1.10，符合
 实测 proposal 的局部性。
 
-## 5. 结论与限制
+## 5. Max-Cut 与 Portfolio 发布视图
+
+`results/benchmarks/tsp_binary_pbit_vs_ordered_1d_mh/` 同时保存 Max-Cut 和 Portfolio 的：
+
+- `*_comparison_runs.csv`：每种方法 24 条逐 run 结果；
+- `*_comparison_summary.csv`：成功率、首次命中、gap、接受率和 TTS；
+- `*_paired_comparison.csv`：配对差值及 bootstrap 区间；
+- `*_success_curves.csv` / `*_success_curves.png`：成功率随 update budget 的变化；
+- `*_method_comparison.png`：成功率、首次命中和平均 best gap；
+- `maxcut_portfolio_comparison_summary.json`：两类问题的严格 JSON 汇总。
+
+这两类问题不使用 TSP 的直接排列编码。它们保持原生 QUBO/Ising 表示，只比较
+Gray binary p-bit 与 ordered 1D P-dit 的器件状态解释。导出命令为：
+
+```bash
+python tools/results/export_maxcut_portfolio_views.py
+```
+
+当前结果：Max-Cut 两种方法均为 24/24 reference hit；Portfolio 的 ordered 1D 为
+18/24（75.0%），Gray binary 为 16/24（66.7%）。Portfolio 中 ordered 1D 的最终覆盖率
+更高，但成功 run 的 median first-hit update 更晚（831 vs 405），因此不能概括为全预算更快。
+
+## 6. 结论与限制
 
 替换后的 kernel 已同时解决表示和器件一致性问题：路线不再依赖 one-hot penalty，
 器件状态也不再只是 hazard/random source，而是作为实际 \(q_{kl}\) proposal 使用。

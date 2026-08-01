@@ -1,0 +1,2 @@
+problem,metric,paired_runs,mean_delta,median_delta,bootstrap_mean_delta_ci95_low,bootstrap_mean_delta_ci95_high,ordered_win_rate,tie_rate,binary_win_rate,ordered_minus_binary_success_probability,bootstrap_success_delta_ci95_low,bootstrap_success_delta_ci95_high
+portfolio_8,ordered best gap minus binary best gap (negative favors ordered),24,-0.0003096000000004,0.0,-0.0012384000000018,0.0006192000000009,0.25,0.5833333333333334,0.1666666666666666,0.0833333333333333,-0.1666666666666666,0.3333333333333333
