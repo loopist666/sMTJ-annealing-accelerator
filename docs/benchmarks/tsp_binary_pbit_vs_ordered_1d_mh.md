@@ -1,4 +1,4 @@
-# Ordered 1D Empirical-Transition MH for TSP
+# Binary P-bit + One-hot Ising vs Direct-Permutation Ordered 1D MH
 
 ## 1. 更新核
 
@@ -60,7 +60,9 @@ e^{-\beta[L(\pi')-L(\pi)]}\frac{q_{lk}}{q_{kl}}
 | event probability cap | 0.5 |
 | TSP sizes | 8, 12 |
 
-比较保持相同的 algorithmic element-update budget。one-hot 基线一次 profile clock 更新
+这里采用端到端方案比较：二值 p-bit 基线使用 one-hot Ising/QUBO，P-dit 路径使用直接
+排列编码与 ordered 1D empirical-transition MH。保存实验同时保持相同的 algorithmic
+element-update budget，但性能差异允许包含编码、可行域和更新核的共同收益。one-hot 基线一次 profile clock 更新
 三个 Gray p-bit channel，因此每条 run 为 40,500 profile clocks、121,500 spin attempts；
 ordered 1D 路线每条 run 为 121,500 empirical proposal-clock ticks。
 
@@ -68,9 +70,9 @@ ordered 1D 路线每条 run 为 121,500 empirical proposal-clock ticks。
 
 | cities | method | variables | raw feasible | median raw/ref | raw reference hit | median 2-opt/ref |
 |---:|---|---:|---:|---:|---:|---:|
-| 8 | one-hot Ising | 64 | 100.0% | 1.263 | 0.0% | 1.025 |
+| 8 | binary p-bit + one-hot Ising | 64 | 100.0% | 1.263 | 0.0% | 1.025 |
 | 8 | ordered 1D empirical-MH | 8 | 100.0% | **1.000** | **100.0%** | **1.000** |
-| 12 | one-hot Ising | 144 | 0.0% | 1.831 | 0.0% | 1.172 |
+| 12 | binary p-bit + one-hot Ising | 144 | 0.0% | 1.831 | 0.0% | 1.172 |
 | 12 | ordered 1D empirical-MH | 12 | **100.0%** | **1.000** | **54.2%** | **1.000** |
 
 12-city reference 由 nearest-neighbor all-start + 2-opt 得到，不保证是严格全局最优；
@@ -85,6 +87,7 @@ MH acceptance 分别为 0.072 和 0.095。被接受的平均 1D move distance �
 替换后的 kernel 已同时解决表示和器件一致性问题：路线不再依赖 one-hot penalty，
 器件状态也不再只是 hazard/random source，而是作为实际 \(q_{kl}\) proposal 使用。
 
-需要注意：这里比较的是“one-hot Ising 整体路线”与“direct permutation ordered 1D
+需要注意：这里比较的是“binary p-bit + one-hot Ising 整体路线”与“direct permutation ordered 1D
 路线”，因此性能差异同时包含表示法和 proposal kernel 的收益，不能只归因于状态几何。
-如需单独测量几何影响，应继续使用 `mtj_p1_application_comparison.py` 的固定编码对照。
+固定编码的几何消融保留在 `src/diagnostics/p1_fixed_encoding_ablation.py`，仅用于诊断，
+不作为本项目的 TSP 主性能对比。

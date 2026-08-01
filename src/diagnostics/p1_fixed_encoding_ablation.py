@@ -12,7 +12,7 @@ device states:
 This isolates the state-geometry choice identified by the P1 device analysis.
 It is not a comparison against the direct permutation P-dit TSP encoding, which
 changes the optimization state space and is benchmarked separately in
-``mtj_p0_pdit_tsp_comparison.py``.
+``src/benchmarks/tsp_binary_pbit_vs_ordered_1d_mh.py``.
 """
 
 from __future__ import annotations
@@ -20,9 +20,14 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
+
+SRC_DIR = Path(__file__).resolve().parents[1]
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
 
 import numpy as np
 import pandas as pd
@@ -61,7 +66,7 @@ from mtj_physical_kstate_demo import compute_energy_scale
 from project_paths import RESULTS_DIR
 
 
-OUTPUT_DIR = RESULTS_DIR / "mtj_p1_application_comparison_output"
+OUTPUT_DIR = RESULTS_DIR / "diagnostics" / "p1_fixed_encoding_ablation"
 METHOD_ORDER = ["gray_binary_pbit", "ordered_1d_pdit"]
 METHOD_LABELS = {
     "gray_binary_pbit": "Gray binary p-bit",
