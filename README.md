@@ -137,6 +137,14 @@ one-hot 基线在 12 城市的 raw feasible rate 为 0。详细说明见
 [`docs/benchmarks/tsp_binary_pbit_vs_ordered_1d_mh.md`](docs/benchmarks/tsp_binary_pbit_vs_ordered_1d_mh.md)，结果位于
 [`results/benchmarks/tsp_binary_pbit_vs_ordered_1d_mh/`](results/benchmarks/tsp_binary_pbit_vs_ordered_1d_mh/)。
 
+同一结果目录还提供 Max-Cut 和 Portfolio 的独立绘图、逐 run CSV、汇总、配对结果及
+success curves。这两个问题没有 permutation 表示，因此沿用原生 QUBO/Ising 编码，比较
+Gray binary p-bit 与 ordered 1D P-dit 器件状态解释。由诊断快照重新导出这些视图：
+
+```bash
+python tools/results/export_maxcut_portfolio_views.py
+```
+
 ## P1：Empirical-transition MH
 
 ```bash
@@ -224,7 +232,7 @@ python src/mtj_ising_application_demos.py
 ## 数据与结果管理
 
 - `data/` 中的 Excel 文件是实验输入，脚本不会覆盖它们。
-- `results/benchmarks/` 保存主性能比较，`results/diagnostics/` 保存不作为主结论的消融。
+- `results/benchmarks/` 保存主性能比较及发布视图，`results/diagnostics/` 保存其诊断源数据。
 - `output/pdf/` 保存可直接阅读的中英文 PDF，`tools/reports/` 保存对应生成脚本。
 - `docs/*.zip`、虚拟环境、Python cache 和临时文件由 `.gitignore` 排除。
 - 重新运行脚本会更新相应 `results/<experiment>/`，提交前应检查参数和 diff。
