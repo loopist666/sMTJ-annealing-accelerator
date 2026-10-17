@@ -1,4 +1,4 @@
-numpy
+numpy>=2.0
 pandas
-matplotlib
-openpyxl
+matplotlib>=3.8
+openpyxl>=3.1

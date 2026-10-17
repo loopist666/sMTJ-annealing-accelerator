@@ -1,0 +1,49 @@
+{
+  "steps": 2048,
+  "runs_per_trace": 32,
+  "gain": 1.5,
+  "seed": 700,
+  "profiles": 8,
+  "filter_tau_s": 2.0,
+  "train_fraction": 0.4,
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "statement": "Finite recorded-signal software replay. Repeated runs reuse measured records; not independent hardware trials. No hardware acceleration claim.",
+  "paired_comparisons": [
+    {
+      "comparison": "replay minus shuffled",
+      "metric": "mean energy gap (negative favors replay)",
+      "estimate": 0.21484375,
+      "software_seed_ci95_low": 0.013647460937500001,
+      "software_seed_ci95_high": 0.41506347656249987
+    },
+    {
+      "comparison": "replay minus gaussian",
+      "metric": "mean energy gap (negative favors replay)",
+      "estimate": -0.0048828125,
+      "software_seed_ci95_low": -0.2217041015625,
+      "software_seed_ci95_high": 0.201171875
+    },
+    {
+      "comparison": "replay minus constant",
+      "metric": "mean energy gap (negative favors replay)",
+      "estimate": -1.3671875,
+      "software_seed_ci95_low": -1.6240966796875,
+      "software_seed_ci95_high": -1.1073730468750003
+    },
+    {
+      "comparison": "replay minus sa",
+      "metric": "mean energy gap (negative favors replay)",
+      "estimate": 1.005859375,
+      "software_seed_ci95_low": 0.8202880859375,
+      "software_seed_ci95_high": 1.208984375
+    },
+    {
+      "comparison": "replay minus greedy",
+      "metric": "mean energy gap (negative favors replay)",
+      "estimate": -5.7666015625,
+      "software_seed_ci95_low": -6.12314453125,
+      "software_seed_ci95_high": -5.411083984375001
+    }
+  ]
+}
