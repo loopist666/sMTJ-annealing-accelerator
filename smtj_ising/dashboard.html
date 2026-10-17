@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R4C5 · Ising solver lab</title>
+<style>
+:root{color-scheme:light;--ink:#17352f;--sub:#61726c;--line:#d8e2db;--accent:#087d6a;--paper:#f4f6f0;--orange:#d99a43}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif}main{max-width:1260px;margin:auto;padding:40px 32px 64px}header{border-bottom:1px solid var(--line);padding:0 0 26px;display:flex;justify-content:space-between;gap:24px}.eyebrow{font:600 12px/1.5 ui-monospace,monospace;letter-spacing:.12em;color:var(--accent)}h1{font-size:36px;line-height:1.3;letter-spacing:-1px;margin:12px 0}h2{font-size:20px;margin:0 0 14px}h3{font-size:16px;margin:0}p{margin:7px 0;color:var(--sub)}.pill{display:inline-block;border:1px solid #abd1c4;border-radius:20px;padding:5px 13px;font-size:12px;color:var(--accent);white-space:nowrap;align-self:flex-start}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}.flow>div{border-top:3px solid #c0d8ca;padding:10px 8px}.flow b{display:block;font-size:14px}.flow span{font-size:12px;color:var(--sub)}.layout{display:grid;grid-template-columns:270px 1fr;gap:22px}.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px}.controls label{display:block;font-size:13px;font-weight:600;margin-top:16px}.controls label:first-child{margin-top:0}select,input[type=number]{width:100%;background:#fafcf9;border:1px solid #cbd7cf;border-radius:6px;color:var(--ink);padding:9px;margin-top:5px;font:inherit;font-size:13px}input[type=range]{width:100%;accent-color:var(--accent)}button{border:0;background:var(--accent);color:#fff;padding:12px;border-radius:7px;width:100%;font:600 14px inherit;cursor:pointer;margin-top:20px}button:hover{background:#096655}button:disabled{opacity:.5;cursor:wait}.small{font-size:12px;color:var(--sub)}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line)}.metrics span{font-size:12px;color:var(--sub);display:block}.metrics strong{font:600 25px/1.5 ui-monospace,monospace}.views{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}.views canvas{display:block;width:100%;height:285px}canvas{width:100%;height:190px}.legend{display:flex;gap:16px;font-size:12px;color:var(--sub);flex-wrap:wrap}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}.note{border-left:3px solid var(--orange);padding:9px 13px;background:#fcf7ed;font-size:13px;color:#795e2e;margin-top:18px}.section{margin-top:24px}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px;text-align:left}th,td{padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}th{font-weight:600;background:#f6f8f4}a{color:var(--accent)}footer{font-size:12px;color:var(--sub);margin-top:32px}.status{font-size:12px;color:var(--accent);min-height:20px;margin-top:10px}.equation{font-family:ui-monospace,monospace;font-size:12px;background:#edf4ee;padding:9px 12px;border-radius:5px}.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}.number{float:right;color:var(--accent)}
+@media(max-width:950px){.layout{grid-template-columns:1fr}.controls{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.controls label:first-child{margin-top:16px}.controls button,.controls .small,.controls .status{grid-column:1/-1}.views{grid-template-columns:1fr 1fr}.metrics strong{font-size:20px}}
+@media(max-width:650px){main{padding:22px 14px}h1{font-size:28px}header{display:block}.pill{margin-top:12px}.flow{grid-template-columns:1fr 1fr}.views,.two{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.panel{padding:16px}}
+</style>
+<main>
+<header><div><div class="eyebrow">R4C5 / MEASUREMENT-DRIVEN OPTIMIZATION</div><h1>单路电流，驱动 Ising 搜索</h1><p>把实测涨落作为探索扰动。自旋、耦合与退火日程保存在软件中。</p></div><div class="pill">离线软件 demo · 无 p-bit 假设</div></header>
+<div class="flow"><div><b>01 · 实测输入</b><span>R4C5 固定 −1 V 的连续电流</span></div><div><b>02 · 因果预处理</b><span>EMA 去基线，前 40% 标定</span></div><div><b>03 · 阈值接受</b><span>单个样本 → 一次软件自旋尝试</span></div><div><b>04 · 精确验证</b><span>16 自旋完整枚举最优值</span></div></div>
+<div class="layout">
+<aside class="panel controls">
+<label>问题<select id="problem"></select></label>
+<label>实测记录<select id="profile"></select></label>
+<label>求解方法<select id="method"><option value="replay">实测原序 / Threshold accepting</option><option value="shuffled">同一组样本，打乱时间</option><option value="gaussian">匹配 RMS 的高斯扰动</option><option value="constant">匹配均值的常阈值因子</option><option value="sa">软件模拟退火 / Metropolis</option><option value="greedy">贪心 / 无扰动</option></select></label>
+<label>软件扰动增益 <span class="number" id="gainLabel">1.5</span><input id="gain" type="range" min="0" max="4" step=".1" value="1.5"></label>
+<label>翻转尝试次数<input id="steps" type="number" min="32" max="2458" value="2048" step="32"></label>
+<label>软件随机种子<input id="seed" type="number" min="0" max="999999" value="700"></label>
+<button id="run">运行求解</button><div id="status" class="status" aria-live="polite"></div>
+<p class="small">同一种子固定初态与节点顺序。样本用完即止；不循环、不插值。界面采用浏览器 PRNG，批量结论以 Python 基准为准。</p>
+</aside>
+<section class="panel">
+<div class="metrics"><div><span>当前最好能量</span><strong id="energy">—</strong></div><div><span>精确最优</span><strong id="optimal">—</strong></div><div><span>能量差</span><strong id="gap">—</strong></div><div><span>样本采集跨度</span><strong id="span">—</strong></div></div>
+<div class="views"><div><h3>自旋与图上的切分</h3><canvas id="graph" aria-label="Ising spin solution graph"></canvas><div class="legend"><span><i class="dot" style="background:#169a8b"></i>s = +1</span><span><i class="dot" style="background:#d99a43"></i>s = −1</span><span>亮边 = 跨分组边</span></div></div><div><h3>能量随搜索下降</h3><canvas id="history" aria-label="Energy history"></canvas><div class="legend"><span><i class="dot" style="background:#169a8b"></i>历史最优</span><span><i class="dot" style="background:#cbd5cc"></i>当前能量</span><span>横轴：翻转尝试</span></div></div></div>
+<div class="equation">ΔEᵢ = 2sᵢ(ΣⱼJᵢⱼsⱼ + hᵢ) &nbsp; · &nbsp; 接受 ΔEᵢ ≤ Aₖ |zₖ|</div>
+<div class="note">Aₖ 是软件能量阈值，不是已标定的器件温度。求解速度来自读取内存数组，不能当作硬件加速。此 demo 不需要分区读出。</div>
+</section>
+</div>
+<div class="two section"><section class="panel"><h2>留出段：归一化实测残差</h2><canvas id="signal" aria-label="Recorded normalized current residual"></canvas><p id="sourceNote" class="small"></p></section><section class="panel"><h2>本次接受阈值</h2><canvas id="threshold" aria-label="Annealed acceptance threshold"></canvas><p class="small">包络按 (1 − k/(M−1))² 收紧。原序与打乱对照保留完全相同的样本值；高斯与常阈值匹配仅作离线消融。</p></section></div>
+<section class="panel section"><h2>固定批量基准</h2><p id="benchmarkNote"></p><div class="scroll"><table><thead><tr><th>问题</th><th>方法</th><th>软件运行次数</th><th>精确解命中率</th><th>平均能量差</th></tr></thead><tbody id="benchmark"></tbody></table></div><p class="small">这些是生成报告时的固定结果，不随上方探索控件改变。记录重用不能算独立硬件重复；四个小问题不能代表普遍性能。</p></section>
+<section class="panel section"><h2>下一步：把离线回放变成可测的实时链路</h2><p>固定偏置器件 → 电流采样 → 去基线与标定 → CPU / FPGA 阈值搜索。先测跨记录稳定性、仪器噪声对照和总采集成本，再判断器件贡献。</p><p><a href="report_zh.md">完整分析与实验建议</a> · <a href="measurement_overview.png">测量曲线</a> · <a href="image_denoising.png">图像去噪应用</a> · <a href="runs.csv">逐次运行数据</a></p></section>
+<footer>无需联网，所有计算在本地浏览器完成。实测有限序列不等于独立真随机源，阈值接受不保证 Boltzmann 采样。</footer>
+</main>
+<script id="payload" type="application/json">__PAYLOAD__</script>
+<script>
+'use strict';
+const D=JSON.parse(document.getElementById('payload').textContent), $=id=>document.getElementById(id);
+const names={replay:'实测原序',shuffled:'打乱实测',gaussian:'高斯阈值',constant:'常阈值因子',sa:'软件 SA',greedy:'贪心'};
+function addOption(el,label,value){const o=document.createElement('option');o.textContent=label;o.value=value;el.appendChild(o)}
+D.benchmark.instances.forEach((p,i)=>addOption($('problem'),p.name,i));D.profiles.forEach((p,i)=>addOption($('profile'),p.sheet+' · '+p.key.split('/')[0],i));
+$('benchmarkNote').textContent=`${D.profiles.length} 条 −1 V 记录 × 每条 ${D.benchmark.runs_per_trace} 个软件种子；每次 ${D.benchmark.steps} 次尝试；gain = ${D.benchmark.gain}。`;
+for(const r of D.benchmark.summary){const tr=document.createElement('tr');for(const x of [r.instance,names[r.mode],r.n_runs,(100*r.hit_rate).toFixed(1)+'%',r.mean_gap.toFixed(3)]){const td=document.createElement('td');td.textContent=x;tr.appendChild(td)}$('benchmark').appendChild(tr)}
+function rng(seed){return()=>{let t=seed+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+function median(a){let b=a.slice().sort((a,b)=>a-b);return(b[Math.floor((b.length-1)/2)]+b[Math.floor(b.length/2)])/2}
+function energy(p,s){let e=0;for(let i=0;i<s.length;i++){e-=p.h[i]*s[i];for(let j=i+1;j<s.length;j++)e-=p.J[i][j]*s[i]*s[j]}return e}
+function optimize(p,z,mode,seed,gain){let R=rng(seed),N=rng(seed+1000003),s=p.h.map(()=>R()<.5?-1:1),sites=z.map(()=>Math.floor(R()*s.length)),mag=z.map(Math.abs),n=z.length;
+if(mode==='shuffled'){for(let i=n-1;i>0;i--){let j=Math.floor(N()*(i+1));[mag[i],mag[j]]=[mag[j],mag[i]]}}
+if(mode==='gaussian'){let m=mag.reduce((a,b)=>a+b*b,0);mag=z.map(()=>Math.sqrt(-2*Math.log(Math.max(N(),1e-12)))*Math.cos(2*Math.PI*N()));let q=mag.reduce((a,b)=>a+b*b,0);mag=mag.map(x=>Math.abs(x)*Math.sqrt(m/q))}
+if(mode==='constant'){mag=mag.map(()=>z.reduce((a,b)=>a+Math.abs(b),0)/n)}if(mode==='sa')mag=z.map(()=>-Math.log(Math.max(1-N(),1e-12)));if(mode==='greedy')mag=z.map(()=>0);
+let scale=median(p.J.map((row,i)=>Math.sqrt(row.reduce((a,b)=>a+b*b,0)+p.h[i]*p.h[i]))),curr=energy(p,s),best=curr,bestS=s.slice(),history=[curr],current=[curr],threshold=[];
+for(let k=0;k<n;k++){let i=sites[k],field=p.h[i]+p.J[i].reduce((a,b,j)=>a+b*s[j],0),delta=2*s[i]*field,t=gain*2*scale*(1-k/(n-1))**2*mag[k];threshold.push(t);if(delta<=t){s[i]*=-1;curr+=delta;if(curr<best-1e-10){best=curr;bestS=s.slice()}}history.push(best);current.push(curr)}return{spins:bestS,energy:energy(p,bestS),history,current,threshold}}
+function context(id){const c=$(id),r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;c.width=Math.round(r.width*d);c.height=Math.round(r.height*d);const g=c.getContext('2d');g.scale(d,d);return[g,r.width,r.height]}
+function plot(id,series,colors){const[g,w,h]=context(id),pad={l:45,r:12,t:18,b:28},all=series.flat(),lo=Math.min(...all),hi=Math.max(...all),range=hi-lo||1;
+g.font='11px sans-serif';g.textAlign='right';g.fillStyle='#7a8b82';for(let k=0;k<=3;k++){let y=pad.t+(h-pad.t-pad.b)*k/3;g.strokeStyle='#e6ece5';g.beginPath();g.moveTo(pad.l,y);g.lineTo(w-pad.r,y);g.stroke();g.fillText((hi-range*k/3).toFixed(1),pad.l-7,y+4)}
+series.forEach((arr,q)=>{g.beginPath();g.strokeStyle=colors[q];g.lineWidth=q?1.8:1;arr.forEach((v,i)=>{let x=pad.l+(w-pad.l-pad.r)*i/(arr.length-1),y=pad.t+(h-pad.t-pad.b)*(hi-v)/range;i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke()});g.textAlign='left';g.fillText('0',pad.l,h-7);g.textAlign='right';g.fillText(String(series[0].length-1),w-pad.r,h-7)}
+function graph(p,s){const[g,w,h]=context('graph'),radius=Math.min(w,h)*.38,pts=s.map((_,i)=>[w/2+radius*Math.cos(i*2*Math.PI/s.length-Math.PI/2),h/2+radius*Math.sin(i*2*Math.PI/s.length-Math.PI/2)]);
+for(let i=0;i<s.length;i++)for(let j=i+1;j<s.length;j++)if(p.J[i][j]){g.strokeStyle=s[i]!==s[j]?'#83bba888':'#e4e9e3';g.lineWidth=s[i]!==s[j]?1.3:.7;g.beginPath();g.moveTo(...pts[i]);g.lineTo(...pts[j]);g.stroke()}
+pts.forEach(([x,y],i)=>{g.fillStyle=s[i]===1?'#169a8b':'#d99a43';g.beginPath();g.arc(x,y,11,0,Math.PI*2);g.fill();g.fillStyle='white';g.font='10px sans-serif';g.textAlign='center';g.fillText(String(i+1),x,y+3.5)})}
+let last=null;
+function render(){if(!last)return;const{p,z,sol}=last;graph(p,sol.spins);plot('history',[sol.current,sol.history],['#cbd5cc','#169a8b']);plot('signal',[z],['#169a8b']);plot('threshold',[sol.threshold],['#d99a43'])}
+function run(){const p=D.benchmark.instances[+$('problem').value],source=D.profiles[+$('profile').value],steps=+$('steps').value,seed=+$('seed').value,gain=+$('gain').value,mode=$('method').value;
+if(!Number.isInteger(steps)||steps<32||steps>source.test_z.length||!Number.isInteger(seed)||seed<0||seed>999999){$('status').textContent=`请输入 32–${source.test_z.length} 次尝试和 0–999999 的整数种子。`;return}
+const z=source.test_z.slice(0,steps),sol=optimize(p,z,mode,seed,gain);last={p,z,sol};$('energy').textContent=sol.energy.toFixed(1);$('optimal').textContent=p.exact_energy.toFixed(1);$('gap').textContent=Math.max(0,sol.energy-p.exact_energy).toFixed(1);$('span').textContent=['replay','shuffled'].includes(mode)?((steps-1)*source.dt_s).toFixed(1)+' s':'软件源';$('sourceNote').textContent=`${source.key}；Δt≈${source.dt_s.toFixed(6)} s；标定段 ${source.split_index} 点；EMA τ=${source.filter_tau_s} s。原序回放每次仅使用后段的前 M 点。`;$('status').textContent=`完成 ${steps} 次尝试 · ${sol.energy<=p.exact_energy+1e-8?'达到精确最优':'返回当前最好解'}`;render();window.demoLastResult={energy:sol.energy,gap:sol.energy-p.exact_energy,steps,mode,spins:sol.spins}}
+$('gain').addEventListener('input',()=>{$('gainLabel').textContent=(+$('gain').value).toFixed(1)});$('run').addEventListener('click',run);$('profile').addEventListener('change',()=>{$('steps').max=D.profiles[+$('profile').value].test_z.length});window.addEventListener('resize',render);run();
+</script>
+</html>
