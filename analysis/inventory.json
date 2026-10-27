@@ -1,0 +1,23 @@
+{
+  "original": {
+    "workbooks": 3,
+    "records": 3,
+    "IT": 3,
+    "IV": 0,
+    "samples": 9192
+  },
+  "r4c5": {
+    "workbooks": 5,
+    "records": 49,
+    "IT": 25,
+    "IV": 24,
+    "samples": 107224
+  },
+  "r4c4": {
+    "workbooks": 4,
+    "records": 21,
+    "IT": 21,
+    "IV": 0,
+    "samples": 86016
+  }
+}

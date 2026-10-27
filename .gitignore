@@ -11,3 +11,5 @@ __pycache__/
 ~$*.xlsx
 pptx_extracted_images/
 tmp/
+results/
+.mplconfig/

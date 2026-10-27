@@ -1,4 +1,0 @@
-geometry,label,embedding_dimension,distinct_nonzero_distances,q_weighted_mean_normalized_distance,proposal_locality_score,mean_nearest_geometry_transition_mass,mean_direction_entropy_fraction,mean_direction_kl_from_uniform,symmetric_rate_vs_negative_distance_pearson,symmetric_rate_vs_negative_distance_spearman
-gray_binary,Gray-coded binary,3,3,0.6369426132931219,0.36305738670687815,0.7320341065513829,0.7188262895647896,0.4525316295541952,0.5529542278885982,0.5313148617302949
-ordered_1d,Ordered 1D P-dit,1,5,0.29151201055586307,0.7084879894441369,0.6900226373295478,0.7188262895647896,0.4525316295541952,0.6452177501613304,0.663683803084112
-isotropic_6state,Isotropic six-state P-dit,6,1,0.9999999999999998,2.220446049250313e-16,1.0,0.7188262895647896,0.4525316295541952,,
