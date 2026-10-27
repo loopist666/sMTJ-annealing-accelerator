@@ -1,0 +1,3 @@
+first_sheet,second_sheet,wait_0V_s,first_mean_mA,second_mean_mA,first_residual_sigma_uA,second_residual_sigma_uA,sigma_ratio_second_over_first,prior_light_exposure
+Run3170,Run3172,844,-20.29734972620645,-23.83301209874844,83.64252139778074,1001.923204036137,11.978634638131805,not reported
+Run3178,Run3183,960,-20.224532216616353,-49.007513388005464,353.15404144497484,161.29215214184083,0.4567189758947495,"possible, dose unspecified"

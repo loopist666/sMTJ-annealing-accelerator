@@ -1,0 +1,107 @@
+[
+  {
+    "path": "data/raw/original/random number.xlsx",
+    "bytes": 88861,
+    "sha256": "58340abac2f79f187573bceaacda6a1c3fd30a30a91f9bb06f50b0f121142d94"
+  },
+  {
+    "path": "data/raw/original/simulated annealing.xlsx",
+    "bytes": 46619,
+    "sha256": "ac286c6e394881a4f81b96e2d2f67014f76a1f85b47e888776f61f4e43f3727d"
+  },
+  {
+    "path": "data/raw/original/simulated annealing_bad.xlsx",
+    "bytes": 99842,
+    "sha256": "b2a8a961e5bf4312e7dfc4a2cb554541393255fa97f5233786389dd097c97dec"
+  },
+  {
+    "path": "data/raw/r4c4/-1to1_test1/Custom Test_2#1.png",
+    "bytes": 80060,
+    "sha256": "5a5a3c039884179d35c483d2b620049799508a3fa0ce29e21cb1bb402c420df1"
+  },
+  {
+    "path": "data/raw/r4c4/-1to1_test1/Custom Test_2#1.xlsx",
+    "bytes": 867289,
+    "sha256": "c703b6c3eb221a8fa8ecee8412d28d81fd05704572d9070963918ec3e7ed1a1e"
+  },
+  {
+    "path": "data/raw/r4c4/-1to1_test2/Custom Test_2#1.png",
+    "bytes": 95547,
+    "sha256": "63e0e464c81df867f12a3d235d6f389ad19aa15d2ef59737e783ea8412b6f0a4"
+  },
+  {
+    "path": "data/raw/r4c4/-1to1_test2/Custom Test_2#1.xlsx",
+    "bytes": 862008,
+    "sha256": "3ad76eb259d52283624344d48d67ae28948050ddcf7f88556950e04ee54f6fa2"
+  },
+  {
+    "path": "data/raw/r4c4/-1to1_test3/Custom Test_2#1.png",
+    "bytes": 34165,
+    "sha256": "e53bd3c88f339279115da632a562e8c6df06347922dff6add996a8f582a3ab49"
+  },
+  {
+    "path": "data/raw/r4c4/-1to1_test3/Custom Test_2#1.xlsx",
+    "bytes": 371295,
+    "sha256": "73f59e40ae4f46b32c021ab855e8e66658359710c8132fae9c84a72b8fbef084"
+  },
+  {
+    "path": "data/raw/r4c4/Light/Custom Test_2#1.png",
+    "bytes": 42777,
+    "sha256": "d2546d4c9400071f437f0d4d9112f8ad7d6ffbc86559f611ce503ea9b3b72355"
+  },
+  {
+    "path": "data/raw/r4c4/Light/Custom Test_2#1.xlsx",
+    "bytes": 495344,
+    "sha256": "84a475ade94eae785ca3e509800585cbe0eb9276a15093a764b928ca0c369685"
+  },
+  {
+    "path": "data/raw/r4c5/-0.25V IT/Custom Test_2#1-1.png",
+    "bytes": 46342,
+    "sha256": "36b56a6861453ad62ea254ff2a053f077c34c701b4bee1583ee14950abde2a80"
+  },
+  {
+    "path": "data/raw/r4c5/-0.25V IT/Custom Test_2#1.xlsx",
+    "bytes": 120274,
+    "sha256": "9c0971ceecdd7c214395c6030a007feaeed12004ba0ce7a13421a54fed07a909"
+  },
+  {
+    "path": "data/raw/r4c5/0.01~2V IT/Custom Test_2#1-1.png",
+    "bytes": 113015,
+    "sha256": "02dba4d64ac4a1fca8b0ee95b6c89a488ed5704c6dc8c82e18fd1adc8df0d876"
+  },
+  {
+    "path": "data/raw/r4c5/0.01~2V IT/Custom Test_2#1.xlsx",
+    "bytes": 1226857,
+    "sha256": "09a82dceb41a6ebb993dcd26c44f8fdc17fb29706145d60091e711fc5d58701d"
+  },
+  {
+    "path": "data/raw/r4c5/IT 1-1V CYCLE/Custom Test_2#1-1.png",
+    "bytes": 144453,
+    "sha256": "601b4ae1509c456a99c280de7242f4213176cb3e42161d8f1e233185d853374a"
+  },
+  {
+    "path": "data/raw/r4c5/IT 1-1V CYCLE/Custom Test_2#1.xlsx",
+    "bytes": 1602751,
+    "sha256": "06e4ad4d7235c61fdb81931c3eed8901cf034a696025e5cbb03d81abe0360c8f"
+  },
+  {
+    "path": "data/raw/r4c5/IV BIPOLAR/Custom Test_1#1-1.png",
+    "bytes": 83813,
+    "sha256": "ad4118b014b6ebca04a3fbe4b0cb307a755875d80e7bafbec6a03496ac657375"
+  },
+  {
+    "path": "data/raw/r4c5/IV BIPOLAR/Custom Test_1#1.xlsx",
+    "bytes": 164331,
+    "sha256": "93ed5389cdac82657d1bcb6032d9d6408947319b149dad2e1a6dfa4a73cc69a7"
+  },
+  {
+    "path": "data/raw/r4c5/fast -1v/Custom Test_2#1-1.png",
+    "bytes": 38786,
+    "sha256": "c4b12a7a9b98cdf5ce1fc54d3f58a1c6a43805836c726f2f0dea90b5ecbdbdef"
+  },
+  {
+    "path": "data/raw/r4c5/fast -1v/Custom Test_2#1.xlsx",
+    "bytes": 125238,
+    "sha256": "5224dc5c4f4e491aee94a5ef4940597389c980a701cad5df4508802e8122e842"
+  }
+]

@@ -11,5 +11,5 @@ __pycache__/
 ~$*.xlsx
 pptx_extracted_images/
 tmp/
-results/*_local/
-data/r4c5_local/
+results/
+.mplconfig/

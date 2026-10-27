@@ -1,0 +1,19 @@
+source,sheet,tau_s,support,start_s,n,sigma_uA,tau_effective_s,acf_sum_truncated
+data/raw/original/random number.xlsx,Sheet1,0.5,five_tau,2.5,4076,0.10558251926387094,1.7718280061535057,False
+data/raw/original/random number.xlsx,Sheet1,0.5,common_50s,50.0,3697,0.08087506918349259,0.8659965230577037,False
+data/raw/original/random number.xlsx,Sheet1,2.0,five_tau,10.0,4016,0.2751318575394162,3.334474123710838,False
+data/raw/original/random number.xlsx,Sheet1,2.0,common_50s,50.0,3697,0.1729301624914005,2.584530546467296,False
+data/raw/original/random number.xlsx,Sheet1,10.0,five_tau,50.0,3697,0.38418148249897227,8.74303534364613,True
+data/raw/original/random number.xlsx,Sheet1,10.0,common_50s,50.0,3697,0.38418148249897227,8.74303534364613,True
+data/raw/original/simulated annealing.xlsx,Sheet1,0.5,five_tau,2.5,980,3878.7313065729927,0.12338397065294476,False
+data/raw/original/simulated annealing.xlsx,Sheet1,0.5,common_50s,50.0,601,3273.8034937815964,0.13431069347435018,False
+data/raw/original/simulated annealing.xlsx,Sheet1,2.0,five_tau,10.0,920,4026.5913247265507,0.2617390088836987,False
+data/raw/original/simulated annealing.xlsx,Sheet1,2.0,common_50s,50.0,601,3663.3955254770476,0.29533484901256596,False
+data/raw/original/simulated annealing.xlsx,Sheet1,10.0,five_tau,50.0,601,4059.0309592182853,0.7660191450967475,False
+data/raw/original/simulated annealing.xlsx,Sheet1,10.0,common_50s,50.0,601,4059.0309592182853,0.7660191450967475,False
+data/raw/original/simulated annealing_bad.xlsx,Sheet1,0.5,five_tau,2.5,4076,2201.6668386311258,0.24931754348335658,False
+data/raw/original/simulated annealing_bad.xlsx,Sheet1,0.5,common_50s,50.0,3697,1455.7926087374335,0.2012679499924954,False
+data/raw/original/simulated annealing_bad.xlsx,Sheet1,2.0,five_tau,10.0,4016,2996.026310801004,0.7190243573966797,False
+data/raw/original/simulated annealing_bad.xlsx,Sheet1,2.0,common_50s,50.0,3697,1966.800190940027,0.8185358594790506,False
+data/raw/original/simulated annealing_bad.xlsx,Sheet1,10.0,five_tau,50.0,3697,2725.1106731163613,3.76787362513559,False
+data/raw/original/simulated annealing_bad.xlsx,Sheet1,10.0,common_50s,50.0,3697,2725.1106731163613,3.76787362513559,False
